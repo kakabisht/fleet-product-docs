@@ -12,7 +12,7 @@ content:
 # Description: SUSE UI bundle
 ui:
   bundle:
-    url: ./dsc-style-bundle/product-ui-bundle.zip
+    url: ./style-bundle/product-ui-bundle.zip
     snapshot: true
 
 asciidoc:

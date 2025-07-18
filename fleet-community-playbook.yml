@@ -12,7 +12,7 @@ content:
 # Description: SUSE UI bundle
 ui:
   bundle:
-    url: ./dsc-style-bundle/community-ui-bundle.zip #https://github.com/SUSEdoc/dsc-style-bundle/blob/main/default-ui/ui-bundle.zip?raw=true
+    url: ./style-bundle/community-ui-bundle.zip #https://github.com/SUSEdoc/dsc-style-bundle/blob/main/default-ui/ui-bundle.zip?raw=true
     snapshot: true
 
 runtime:
