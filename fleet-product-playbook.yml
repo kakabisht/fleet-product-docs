@@ -1,24 +1,25 @@
 site:
-  title: Fleet
+  title: Continuous Delivery
   url: /
-  start_page: v0.12@Fleet:en:index.adoc
+  start_page: next@continuous-delivery::index.adoc
 
 content:
   sources:
     - url: ./
-      start_paths: [versions/v0.12, versions/v0.11, versions/v0.10, versions/v0.9]
+      start_paths: [versions/next, versions/v0.12]
       branches: HEAD
 
 # Description: SUSE UI bundle
 ui:
   bundle:
-    url: ./product-ui-bundle.zip
+    url: ./dsc-style-bundle/ui-bundle.zip
     snapshot: true
-  supplemental_files: ./dsc-style-bundle/supplemental-files/rancher
+  supplemental_files: ./turtles-supplemental-files
 
 asciidoc:
   attributes:
     page-pagination: ''
+    build-type: product
     page-toclevels: 4@
   extensions:
     - '@asciidoctor/tabs'
@@ -28,4 +29,4 @@ antora:
   - require: '@springio/antora-xref-extension'
 
 output:
-  dir: build/site
+  dir: build/site-product
