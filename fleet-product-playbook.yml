@@ -1,13 +1,7 @@
 site:
-<<<<<<< HEAD
   title: Continuous Delivery
   url: /
   start_page: next@continuous-delivery::index.adoc
-=======
-  title: Fleet
-  url: /
-  start_page: next@fleet:index.adoc
->>>>>>> e69f9aba7bc9d6d7628db2b29ea6740472646444
 
 content:
   sources:
@@ -18,33 +12,14 @@ content:
 # Description: SUSE UI bundle
 ui:
   bundle:
-<<<<<<< HEAD
-=======
-<<<<<<<< HEAD:fleet-community-playbook.yml
->>>>>>> e69f9aba7bc9d6d7628db2b29ea6740472646444
     url: ./dsc-style-bundle/ui-bundle.zip
     snapshot: true
   supplemental_files: ./turtles-supplemental-files
-
-<<<<<<< HEAD
-asciidoc:
-  attributes:
-    page-pagination: ''
-    build-type: product
-=======
-
-runtime:
-  fetch: true
-========
-    url: ./style-bundle/product-ui-bundle.zip
-    snapshot: true
->>>>>>>> e69f9aba7bc9d6d7628db2b29ea6740472646444:fleet-product-playbook.yml
 
 asciidoc:
   attributes:
     page-pagination: ''
     build-type: community
->>>>>>> e69f9aba7bc9d6d7628db2b29ea6740472646444
     page-toclevels: 4@
   extensions:
     - '@asciidoctor/tabs'
@@ -54,8 +29,5 @@ antora:
   - require: '@springio/antora-xref-extension'
 
 output:
-<<<<<<< HEAD
   dir: build/site-product
-=======
-  dir: build/site-community
->>>>>>> e69f9aba7bc9d6d7628db2b29ea6740472646444
+

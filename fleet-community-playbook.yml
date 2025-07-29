@@ -1,7 +1,6 @@
 site:
   title: Fleet
   url: /
-<<<<<<< HEAD
   start_page: next@fleet:index.adoc
 
 content:
@@ -9,47 +8,19 @@ content:
     - url: ./
       start_paths: [versions/next, versions/v0.12]
       branches: HEAD
-=======
-  start_page: v0.12@fleet:en:index.adoc
-
-content:
-  sources:
-    - url: https://github.com/rancher/fleet-product-docs.git
-      start_paths: [versions/v0.12, versions/v0.11, versions/v0.10, versions/v0.9]
-      branches: [main]
->>>>>>> e69f9aba7bc9d6d7628db2b29ea6740472646444
 
 # Description: SUSE UI bundle
 ui:
   bundle:
-<<<<<<< HEAD
-<<<<<<<< HEAD:fleet-community-playbook.yml
     url: ./dsc-style-bundle/ui-bundle.zip
     snapshot: true
   supplemental_files: ./turtles-supplemental-files
 
 
-runtime:
-  fetch: true
-========
-    url: ./style-bundle/product-ui-bundle.zip
-    snapshot: true
->>>>>>>> e69f9aba7bc9d6d7628db2b29ea6740472646444:fleet-product-playbook.yml
-=======
-    url: ./style-bundle/community-ui-bundle.zip #https://github.com/SUSEdoc/dsc-style-bundle/blob/main/default-ui/ui-bundle.zip?raw=true
-    snapshot: true
-
-runtime:
-  fetch: true
->>>>>>> e69f9aba7bc9d6d7628db2b29ea6740472646444
-
 asciidoc:
   attributes:
     page-pagination: ''
-<<<<<<< HEAD
     build-type: community
-=======
->>>>>>> e69f9aba7bc9d6d7628db2b29ea6740472646444
     page-toclevels: 4@
   extensions:
     - '@asciidoctor/tabs'
@@ -59,8 +30,4 @@ antora:
   - require: '@springio/antora-xref-extension'
 
 output:
-<<<<<<< HEAD
   dir: build/site-community
-=======
-  dir: build/site
->>>>>>> e69f9aba7bc9d6d7628db2b29ea6740472646444
