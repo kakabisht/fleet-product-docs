@@ -10,20 +10,10 @@ Fleet is distributed as a Helm chart. Helm 3 is a CLI, has no server side compon
 
 [CAUTION]
 
-ifeval::["{build-type}" == "product"]
-.<<_suse_rancher_prime_continous_delivery,{product_name}>> in Rancher
+.{product_name} in Rancher
 ====
 Rancher has separate helm charts for Fleet and uses a different repository.
 ====
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-.<<_continous_delivery,{product_name}>> in Rancher
-====
-Rancher has separate helm charts for Fleet and uses a different repository.
-====
-endif::[] 
-
 
 [tabs]
 ======
@@ -78,14 +68,7 @@ kubectl apply -f example.yaml
 
 == Get Status
 
-ifeval::["{build-type}" == "product"]
-Get status of what <<_suse_rancher_prime_continous_delivery,{product_name}>> is doing
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-Get status of what <<_continous_delivery,{product_name}>> is doing
-
-endif::[] 
+Get status of what {product_name} is doing
 
 [,shell]
 ----

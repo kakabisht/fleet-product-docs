@@ -2,13 +2,7 @@
 
 A reference list of, mostly internal, configuration options.
 
-ifeval::["{build-type}" == "product"]
-== Configure <<_suse_rancher_prime_continous_delivery,{product_name}>> Install Options In Rancher
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-== Configure <<_continous_delivery,{product_name}>> Install Options In Rancher
-endif::[] 
+== Configure {product_name} Install Options In Rancher
 
 Rancher looks for Helm values in a ConfigMap called `rancher-config` in the `cattle-system` namespace.
 Any Helm chart value for Fleet can be specified under the name of the chart. Note the value of the `fleet`` key is a string.
@@ -68,15 +62,7 @@ The config https://github.com/rancher/fleet/blob/main/internal/config/config.go#
 
 == Labels
 
-ifeval::["{build-type}" == "product"]
-Labels used by <<_suse_rancher_prime_continous_delivery,{product_name}>>:
-
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-Labels used by <<_continous_delivery,{product_name}>>:
-
-endif::[] 
+Labels used by {product_name}:
 
 * `fleet.cattle.io/agent=true` - NodeSelector label for agent's deployment affinity setting
 * `fleet.cattle.io/non-managed-agent` - managed agent bundle won't target Clusters with this label
@@ -94,13 +80,7 @@ resource will not be processed.
 
 == Annotations
 
-ifeval::["{build-type}" == "product"]
-Annotations used by <<_suse_rancher_prime_continous_delivery,{product_name}>>:
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-Annotations used by <<_continous_delivery,{product_name}>>:
-endif::[] 
+Annotations used by {product_name}:
 
 * `fleet.cattle.io/agent-namespace`
 * `fleet.cattle.io/bundle-id`
@@ -119,13 +99,5 @@ Clusters. Default configuration will be used if these fields are not provided.
 
 If you change the resources limits, make sure the limits allow the fleet-agent to work normally.
 
-ifeval::["{build-type}" == "product"]
-Keep in mind that if you downgrade <<_suse_rancher_prime_continous_delivery,{product_name}>> to a previous version than v0.7.0 fallbacks to the built-in defaults.
-Agents will redeploy if they had custom affinity. If <<_suse_rancher_prime_continous_delivery,{product_name}>> version number does not change, redeployment might not be immediate.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-Keep in mind that if you downgrade <<_continous_delivery,{product_name}>> to a previous version than v0.7.0 fallbacks to the built-in defaults.
-Agents will redeploy if they had custom affinity. If <<_continous_delivery,{product_name}>> version number does not change, redeployment might not be immediate.
-endif::[] 
-
+Keep in mind that if you downgrade {product_name} to a previous version than v0.7.0 fallbacks to the built-in defaults.
+Agents will redeploy if they had custom affinity. If {product_name} version number does not change, redeployment might not be immediate.

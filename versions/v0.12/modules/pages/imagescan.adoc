@@ -1,14 +1,5 @@
 = Using Image Scan to Update Container Image References
-
-ifeval::["{build-type}" == "product"]
-Image scan in <<_suse_rancher_prime_continous_delivery,{product_name}>> allows you to scan your image repository, fetch the desired image and update your git repository, without the need to manually update your manifests.
-
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-Image scan in <<_continous_delivery,{product_name}>> allows you to scan your image repository, fetch the desired image and update your git repository, without the need to manually update your manifests.
-
-endif::[]
+Image scan in {product_name} allows you to scan your image repository, fetch the desired image and update your git repository, without the need to manually update your manifests.
 
 [CAUTION]
 ====
@@ -134,13 +125,4 @@ spec:
 
 Try pushing a new image tag, for example, `<image>:<new-tag>`. Wait for a while and there should be a new commit pushed into your git repository to change tag in deployment.yaml.
 
-
-ifeval::["{build-type}" == "product"]
-Once change is made into git repository, <<_suse_rancher_prime_continous_delivery,{product_name}>> reads through the change and deploy the change into your cluster.
-
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-Once change is made into git repository, <<_continous_delivery,{product_name}>> reads through the change and deploy the change into your cluster.
-
-endif::[]
+Once change is made into git repository, {product_name} reads through the change and deploy the change into your cluster.

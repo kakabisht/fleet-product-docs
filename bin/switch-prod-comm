@@ -42,7 +42,7 @@ for version in $(fetch_versions_list); do
     if ln -sf antora-yml/antora-"$target_version".yml antora.yml; then
       dprint "Switched to $target_version : antora.yml -> antora-yml/antora-$target_version.yml"
       dprint "== Contents =="
-      contents=$(cat antora.yml)
+      contents=$(cat antora.yml)  
       dprint "$contents"
       dprint "== End contents =="
     else

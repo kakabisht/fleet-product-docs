@@ -1,12 +1,6 @@
 = Git Repository Contents
 
-ifeval::["{build-type}" == "product"]
-<<_suse_rancher_prime_continous_delivery,{product_name}>> creates bundles from a git repository. This happens either explicitly by specifying paths, or when a `fleet.yaml` is found.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-<<_continous_delivery,{product_name}>> creates bundles from a git repository. This happens either explicitly by specifying paths, or when a `fleet.yaml` is found.
-endif::[]
+{product_name} creates bundles from a git repository. This happens either explicitly by specifying paths, or when a `fleet.yaml` is found.
 
 Each bundle is created from paths in a GitRepo and modified further by reading the discovered `fleet.yaml` file.
 Bundle lifecycles are tracked between releases by the helm releaseName field added to each bundle. If the releaseName is not
@@ -20,13 +14,7 @@ deployed must *gzip to less than 1MB*.
 
 == How repos are scanned
 
-ifeval::["{build-type}" == "product"]
-Multiple paths can be defined for a `GitRepo` and each path is scanned independently. Internally each scanned path will become a xref:concepts.adoc[bundle] that <<_suse_rancher_prime_continous_delivery,{product_name}>> manages, deploys, and monitors independently.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-Multiple paths can be defined for a `GitRepo` and each path is scanned independently. Internally each scanned path will become a xref:concepts.adoc[bundle] that <<_continous_delivery,{product_name}>> manages, deploys, and monitors independently.
-endif::[]
+Multiple paths can be defined for a `GitRepo` and each path is scanned independently. Internally each scanned path will become a xref:concepts.adoc[bundle] that {product_name} manages, deploys, and monitors independently.
 
 The following files are looked for to determine the how the resources will be deployed.
 
@@ -56,17 +44,9 @@ The following files are looked for to determine the how the resources will be de
 
 === Alternative scan, explicitly defined by the user
 
-ifeval::["{build-type}" == "product"]
-In addition to the previously described method, <<_suse_rancher_prime_continous_delivery,{product_name}>> also supports a more direct, user-driven approach for defining Bundles.
+In addition to the previously described method, {product_name} also supports a more direct, user-driven approach for defining Bundles.
 
-In this mode, <<_suse_rancher_prime_continous_delivery,{product_name}>> loads all resources found within the specified base directory. It only attempts to locate a `fleet.yaml` file at the root of that directory if an options file is not explicitly provided.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-In addition to the previously described method, <<_continous_delivery,{product_name}>> also supports a more direct, user-driven approach for defining Bundles.
-
-In this mode, <<_continous_delivery,{product_name}>> loads all resources found within the specified base directory. It only attempts to locate a `fleet.yaml` file at the root of that directory if an options file is not explicitly provided.
-endif::[]
+In this mode, {product_name} loads all resources found within the specified base directory. It only attempts to locate a `fleet.yaml` file at the root of that directory if an options file is not explicitly provided.
 
 Unlike the traditional scanning method, this one is not recursive and does not attempt to find Bundle definitions other than those explicitly specified by the user.
 
@@ -124,24 +104,10 @@ spec:
 In the example above, the user explicitly defines four Bundles to be generated.
 
 * In the first case, the base directory is specified as `driven/helm`. As shown in the directory structure, this path contains a `fleet.yaml` file, which will be used to configure the Bundle.
-+
-ifeval::["{build-type}" == "product"]
-* In the second case, the base directory is `driven/simple`, which contains only Kubernetes resource manifests (`configmap.yaml` and `service.yaml`). Since no `fleet.yaml` or options file is specified, <<_suse_rancher_prime_continous_delivery,{product_name}>> generates a Bundle using the default behavior--simply packaging all resources found within the directory.
-endif::[]
-+
-ifeval::["{build-type}" == "community"]
-* In the second case, the base directory is `driven/simple`, which contains only Kubernetes resource manifests (`configmap.yaml` and `service.yaml`). Since no `fleet.yaml` or options file is specified, <<_continous_delivery,{product_name}>> generates a Bundle using the default behavior--simply packaging all resources found within the directory.
-endif::[]
-
+* In the second case, the base directory is `driven/simple`, which contains only Kubernetes resource manifests (`configmap.yaml` and `service.yaml`). Since no `fleet.yaml` or options file is specified, {product_name} generates a Bundle using the default behavior--simply packaging all resources found within the directory.
 * The third and fourth cases both reference the same base directory: `driven/kustomize`. However, each specifies a different options file (`dev.yaml` and `test.yaml`, respectively). These options files define overlay-specific configuration for each environment (e.g., dev, test) by selecting the appropriate kustomize overlay subdirectories and applying them on top of the shared base.
 
-ifeval::["{build-type}" == "product"]
-<<_suse_rancher_prime_continous_delivery,{product_name}>> processes these as distinct Bundles, even though they originate from the same base path, because the provided options files point to different configurations.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-<<_continous_delivery,{product_name}>> processes these as distinct Bundles, even though they originate from the same base path, because the provided options files point to different configurations.
-endif::[]
+{product_name} processes these as distinct Bundles, even though they originate from the same base path, because the provided options files point to different configurations.
 
 An example of the files used in the third and fourth Bundles would be the following: (These files follow the exact same format as `fleet.yaml`, but since we can now reference them by name, we can use one that best suits our needs)
 
@@ -165,15 +131,8 @@ bundles:
       options: overlays/dev/dev.yaml
 ----
 
-ifeval::["{build-type}" == "product"]
 However, the path defined within `dev.yaml` should still be relative to `driven/kustomize`.
-This is because when <<_suse_rancher_prime_continous_delivery,{product_name}>> reads the options files, it always uses the base directory as the root.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-However, the path defined within `dev.yaml` should still be relative to `driven/kustomize`.
-This is because when <<_continous_delivery,{product_name}>> reads the options files, it always uses the base directory as the root.
-endif::[]
+This is because when {product_name} reads the options files, it always uses the base directory as the root.
 
 In other words, with the previous example... this would be incorrect:
 
@@ -196,24 +155,11 @@ kustomize:
 With this new way of defining Bundles, it becomes much more direct and also simplifies the adoption of deployments using kustomize.
 In the example, we can see a complete kustomize use case where for each Bundle, we can specify which version we want.
 
-ifeval::["{build-type}" == "product"]
-With the previous scanning option, <<_suse_rancher_prime_continous_delivery,{product_name}>> cannot determine which YAML we want to use to configure the Bundle, so it attempts to find it on its own (Which, at times, does not provide enough flexibility.)
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-With the previous scanning option, <<_continous_delivery,{product_name}>> cannot determine which YAML we want to use to configure the Bundle, so it attempts to find it on its own (Which, at times, does not provide enough flexibility.)
-endif::[]
-
+With the previous scanning option, {product_name} cannot determine which YAML we want to use to configure the Bundle, so it attempts to find it on its own (Which, at times, does not provide enough flexibility.)
 
 === Excluding files and directories from bundles
 
-ifeval::["{build-type}" == "product"]
-<<_suse_rancher_prime_continous_delivery,{product_name}>> supports file and directory exclusion by means of `.fleetignore` files, in a similar fashion to how `.gitignore` files behave in git repositories:
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-<<_continous_delivery,{product_name}>> supports file and directory exclusion by means of `.fleetignore` files, in a similar fashion to how `.gitignore` files behave in git repositories:
-endif::[]
+{product_name} supports file and directory exclusion by means of `.fleetignore` files, in a similar fashion to how `.gitignore` files behave in git repositories:
 
 * Glob syntax is used to match files or directories, using Golang's
 https://pkg.go.dev/path/filepath#Match[`filepath.Match`]
@@ -259,13 +205,7 @@ configured differently from the parent bundle.
 
 *Helm chart dependencies*:
 
-ifeval::["{build-type}" == "product"]
-<<_suse_rancher_prime_continous_delivery,{product_name}>> automatically handles updating Helm chart dependencies, unless flag `disableDependencyUpdate` (`false` by default) is set to `true`.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-<<_continous_delivery,{product_name}>> automatically handles updating Helm chart dependencies, unless flag `disableDependencyUpdate` (`false` by default) is set to `true`.
-endif::[]
+{product_name} automatically handles updating Helm chart dependencies, unless flag `disableDependencyUpdate` (`false` by default) is set to `true`.
 
 If automatic dependencies updates are disabled, it is up to the user to fulfill the dependency list for the Helm charts.
 As such, you must manually run `helm dependencies update $chart` OR run `helm dependencies build $chart` prior to
@@ -300,16 +240,9 @@ If the chart generates certificates or passwords in its templates, these values 
 
 Credentials loaded from the downstream cluster with `valuesFrom` are by default encrypted at rest, when https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/[data encryption] is enabled in Kubernetes. Credentials contained in the default `values.yaml` file, or defined via `values:` or `valuesFiles` are not, as they are loaded from the repository when the bundle is created.
 
-ifeval::["{build-type}" == "product"]
-Hardened clusters should add the <<_suse_rancher_prime_continous_delivery,{product_name}>> CRDs to the xref:gitrepo-add#storing-credentials-in-git[list of resources encrypted at rest], on the upstream cluster, when storing credentials in the bundles.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-Hardened clusters should add the <<_continous_delivery,{product_name}>> CRDs to the xref:gitrepo-add#storing-credentials-in-git[list of resources encrypted at rest], on the upstream cluster, when storing credentials in the bundles.
-endif::[]
+Hardened clusters should add the {product_name} CRDs to the xref:gitrepo-add#storing-credentials-in-git[list of resources encrypted at rest], on the upstream cluster, when storing credentials in the bundles.
 
 ====
-
 
 === Using ValuesFrom
 
@@ -453,13 +386,6 @@ See xref:./ref-status-fields.adoc[Cluster and Bundle state].
 Nested `GitRepo CRs` (defining a `GitRepo` that points to a repository containing one or more `GitRepo` resources) is supported.
 You can use this feature to take advantage of `GitOps` in your `GitRepo` resources or, for example, to split complex scenarios into more than one `GitRepo` resource.
 
-
-ifeval::["{build-type}" == "product"]
-When finding a `GitRepo` in a `Bundle` <<_suse_rancher_prime_continous_delivery,{product_name}>> simply deploy it as any other resource.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-When finding a `GitRepo` in a `Bundle` <<_continous_delivery,{product_name}>> simply deploy it as any other resource.
-endif::[]
+When finding a `GitRepo` in a `Bundle` {product_name} simply deploy it as any other resource.
 
 See https://github.com/rancher/fleet-examples/tree/master/single-cluster/multi-gitrepo[this example].

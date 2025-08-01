@@ -6,20 +6,20 @@ site:
 content:
   sources:
     - url: ./
-      start_paths: [versions/next, versions/v0.12]
+      # start_paths: [docs/next]
       branches: HEAD
-
+      start_path: ./docs/next/
+      
 # Description: SUSE UI bundle
 ui:
   bundle:
-    url: ./dsc-style-bundle/ui-bundle.zip
+    url: ./dsc-style-bundle/aiyo-ui-bundle.zip
     snapshot: true
-  supplemental_files: ./turtles-supplemental-files
 
 asciidoc:
   attributes:
     page-pagination: ''
-    build-type: community
+    build-type: product
     page-toclevels: 4@
   extensions:
     - '@asciidoctor/tabs'

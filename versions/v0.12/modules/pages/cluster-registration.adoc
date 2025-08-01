@@ -166,26 +166,11 @@ Helm will use the default context in `+${HOME}/.kube/config+` to deploy the agen
 to change which cluster Helm is installing to.
 ====
 
-
-ifeval::["{build-type}" == "product"]
-
-
 [CAUTION]
-.<<_suse_rancher_prime_continous_delivery,{product_name}>> in Rancher
+.{product_name} in Rancher
 ====
-Rancher has separate helm charts for <<_suse_rancher_prime_continous_delivery,{product_name}>> and uses a different repository.
+Rancher has separate helm charts for {product_name} and uses a different repository.
 ====
-
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-
-[CAUTION]
-.<<_continous_delivery,{product_name}>> in Rancher
-
-Rancher has separate helm charts for <<_continous_delivery,{product_name}>> and uses a different repository.
-
-endif::[]
 
 Add Fleet's Helm repo.
 [,bash]
@@ -380,14 +365,7 @@ spec:
     ttl: 240h
 ----
 
-ifeval::["{build-type}" == "product"]
-After the `ClusterRegistrationToken` is created, <<_suse_rancher_prime_continous_delivery,{product_name}>> creates a corresponding `Secret` with the same name.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-After the `ClusterRegistrationToken` is created, <<_continous_delivery,{product_name}>> creates a corresponding `Secret` with the same name.
-endif::[]
-As the `Secret` creation is performed asynchronously, you will need to wait until it's available before using it.
+After the `ClusterRegistrationToken` is created, {product_name} creates a corresponding `Secret` with the same name. As the `Secret` creation is performed asynchronously, you will need to wait until it's available before using it.
 
 One way to do so is via the following one-liner:
 
@@ -419,13 +397,8 @@ The manager-initiated registration flow is accomplished by creating a
 
 [IMPORTANT]
 ====
-ifeval::["{build-type}" == "product"]
-If you are using <<_suse_rancher_prime_continous_delivery,{product_name}>> standalone without Rancher, it must be installed as described in xref:./installation.adoc#configuration-for-multi-cluster[installation details].
-endif::[]
+If you are using {product_name} standalone without Rancher, it must be installed as described in xref:./installation.adoc#configuration-for-multi-cluster[installation details].
 
-ifeval::["{build-type}" == "community"]
-If you are using <<_continous_delivery,{product_name}>> standalone without Rancher, it must be installed as described in xref:./installation.adoc#configuration-for-multi-cluster[installation details].
-endif::[]
 The manager-initiated registration is used when you add a cluster from the Rancher dashboard.
 ====
 

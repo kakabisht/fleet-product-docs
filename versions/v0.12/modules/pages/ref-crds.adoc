@@ -90,12 +90,7 @@
 
 Bundle contains the resources of an application and its deployment options. It will be deployed as a Helm chart to target clusters.
 
-ifeval::["{build-type}" == "product"]
-When a GitRepo is scanned it will produce one or more bundles. Bundles are a collection of resources that get deployed to one or more cluster(s). Bundle is the fundamental deployment unit used in <<_suse_rancher_prime_continous_delivery,{product_name}>>. endif::[]
-
-ifeval::["{build-type}" == "community"]
-When a GitRepo is scanned it will produce one or more bundles. Bundles are a collection of resources that get deployed to one or more cluster(s). Bundle is the fundamental deployment unit used in <<_continous_delivery,{product_name}>>.
-endif::[] 
+When a GitRepo is scanned it will produce one or more bundles. Bundles are a collection of resources that get deployed to one or more cluster(s). Bundle is the fundamental deployment unit used in {product_name}. endif::[]
 
 The contents of a Bundle may be Kubernetes manifests, Kustomize configuration, or Helm charts. Regardless of the source the contents are dynamically rendered into a Helm chart by the agent and installed into the downstream cluster as a Helm release.
 
@@ -389,14 +384,7 @@ BundleSummary contains the number of bundle deployments in each state and a list
 [discrete]
 ==== BundleTarget
 
-ifeval::["{build-type}" == "product"]
-BundleTarget declares clusters to deploy to <<_suse_rancher_prime_continous_delivery,{product_name}>> will merge the BundleDeploymentOptions from customizations into this struct.
-
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-BundleTarget declares clusters to deploy to <<_continous_delivery,{product_name}>> will merge the BundleDeploymentOptions from customizations into this struct.
-endif::[] 
+BundleTarget declares clusters to deploy to {product_name} will merge the BundleDeploymentOptions from customizations into this struct.
 
 |===
 | Field | Description | Scheme | Required
@@ -447,13 +435,7 @@ endif::[]
 [discrete]
 ==== BundleTargetRestriction
 
-ifeval::["{build-type}" == "product"]
-BundleTargetRestriction is used internally by <<_suse_rancher_prime_continous_delivery,{product_name}>> and should not be modified. It acts as an allow list, to prevent the creation of BundleDeployments from Targets created by TargetCustomizations in `fleet.yaml``.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-BundleTargetRestriction is used internally by <<_continous_delivery,{product_name}>> and should not be modified. It acts as an allow list, to prevent the creation of BundleDeployments from Targets created by TargetCustomizations in `fleet.yaml``.
-endif::[] 
+BundleTargetRestriction is used internally by {product_name} and should not be modified. It acts as an allow list, to prevent the creation of BundleDeployments from Targets created by TargetCustomizations in `fleet.yaml``.
 
 |===
 | Field | Description | Scheme | Required
@@ -664,14 +646,7 @@ RolloverStrategy controls the rollout of the bundle across clusters.
 [discrete]
 ==== BundleDeployment
 
-ifeval::["{build-type}" == "product"]
-BundleDeployment is used internally by <<_suse_rancher_prime_continous_delivery,{product_name}>> and should not be used directly. When a Bundle is deployed to a cluster an instance of a Bundle is called a BundleDeployment. 
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-BundleDeployment is used internally by <<_continous_delivery,{product_name}>> and should not be used directly. When a Bundle is deployed to a cluster an instance of a Bundle is called a BundleDeployment. 
-
-endif::[] 
+BundleDeployment is used internally by {product_name} and should not be used directly. When a Bundle is deployed to a cluster an instance of a Bundle is called a BundleDeployment. 
 
 A BundleDeployment represents the state of that Bundle on a specific cluster with its cluster-specific customizations. The Fleet agent is only aware of BundleDeployment resources that are created for the cluster the agent is managing.
 
@@ -1428,17 +1403,7 @@ BundleNamespaceMappingList contains a list of BundleNamespaceMapping
 [discrete]
 ==== Cluster
 
-
-ifeval::["{build-type}" == "product"]
-Cluster corresponds to a Kubernetes cluster. <<_suse_rancher_prime_continous_delivery,{product_name}>> deploys bundles to targeted clusters. Clusters to which <<_suse_rancher_prime_continous_delivery,{product_name}>> deploys manifests are referred to as downstream clusters. In the single cluster use case, the Fleet Kubernetes cluster is both the manager and downstream cluster at the same time.
-
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-Cluster corresponds to a Kubernetes cluster. <<_continous_delivery,{product_name}>>  deploys bundles to targeted clusters. Clusters to which <<_continous_delivery,{product_name}>>  deploys manifests are referred to as downstream clusters. In the single cluster use case, the Fleet Kubernetes cluster is both the manager and downstream cluster at the same time.
-
-endif::[] 
-
+Cluster corresponds to a Kubernetes cluster. {product_name} deploys bundles to targeted clusters. Clusters to which {product_name} deploys manifests are referred to as downstream clusters. In the single cluster use case, the Fleet Kubernetes cluster is both the manager and downstream cluster at the same time.
 
 |===
 | Field | Description | Scheme | Required
@@ -1831,13 +1796,7 @@ ClusterGroupList contains a list of ClusterGroup
 [discrete]
 ==== ClusterRegistration
 
-ifeval::["{build-type}" == "product"]
-ClusterRegistration is used internally by <<_suse_rancher_prime_continous_delivery,{product_name}>> and should not be used directly.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-ClusterRegistration is used internally by <<_continous_delivery,{product_name}>> and should not be used directly.
-endif::[] 
+ClusterRegistration is used internally by {product_name} and should not be used directly.
 
 |===
 | Field | Description | Scheme | Required
@@ -2007,13 +1966,7 @@ ClusterRegistrationTokenList contains a list of ClusterRegistrationToken
 [discrete]
 ==== Content
 
-ifeval::["{build-type}" == "product"]
-Content is used internally by <<_suse_rancher_prime_continous_delivery,{product_name}>> and should not be used directly. It contains the resources from a bundle for a specific target cluster.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-Content is used internally by <<_continous_delivery,{product_name}>> and should not be used directly. It contains the resources from a bundle for a specific target cluster.
-endif::[] 
+Content is used internally by {product_name} and should not be used directly. It contains the resources from a bundle for a specific target cluster.
 
 |===
 | Field | Description | Scheme | Required
@@ -2111,11 +2064,11 @@ CommitSpec specifies how to commit changes to the git repository
 ==== GitRepo
 
 ifeval::["{build-type}" == "product"]
-GitRepo describes a git repository that is watched by <<_suse_rancher_prime_continous_delivery,{product_name}>>. The resource contains the necessary information to deploy the repo, or parts of it, to target clusters.
+GitRepo describes a git repository that is watched by {product_name}. The resource contains the necessary information to deploy the repo, or parts of it, to target clusters.
 endif::[]
 
 ifeval::["{build-type}" == "community"]
-GitRepo describes a git repository that is watched by <<_continous_delivery,{product_name}>>. The resource contains the necessary information to deploy the repo, or parts of it, to target clusters.
+GitRepo describes a git repository that is watched by {product_name}. The resource contains the necessary information to deploy the repo, or parts of it, to target clusters.
 endif::[] 
 
 |===

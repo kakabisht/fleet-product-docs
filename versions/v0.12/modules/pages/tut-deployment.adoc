@@ -2,15 +2,7 @@
 
 To deploy workloads onto downstream clusters, first create a Git repo, then create a GitRepo resource and apply it.
 
-ifeval::["{build-type}" == "product"]
-This tutorial uses the https://github.com/rancher/fleet-examples[<<_suse_rancher_prime_continous_delivery,{product_name}>>-examples] repository.
-
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-This tutorial uses the https://github.com/rancher/fleet-examples[<<_continous_delivery,{product_name}>>-examples] repository.
-
-endif::[] 
+This tutorial uses the https://github.com/rancher/fleet-examples[{product_name}-examples] repository.
 
 [NOTE]
 ====
@@ -21,16 +13,7 @@ For more details on the options that are available per Git repository see xref:g
 
 == Single-Cluster Examples
 
-ifeval::["{build-type}" == "product"]
-
-All examples will deploy content to clusters with no per-cluster customizations. This is a good starting point to understand the basics of structuring Git repos for <<_suse_rancher_prime_continous_delivery,{product_name}>>.
-
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-All examples will deploy content to clusters with no per-cluster customizations. This is a good starting point to understand the basics of structuring Git repos for <<_continous_delivery,{product_name}>>.
-
-endif::[] 
+All examples will deploy content to clusters with no per-cluster customizations. This is a good starting point to understand the basics of structuring Git repos for {product_name}.
 
 [tabs,sync-group-id=examples]
 ======

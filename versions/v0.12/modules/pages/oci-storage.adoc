@@ -1,13 +1,6 @@
 = OCI Storage
 
-ifeval::["{build-type}" == "product"]
-<<_suse_rancher_prime_continous_delivery,{product_name}>> stores Kubernetes bundle resources in etcd by default. However, etcd has strict size limits and is not optimized for large workloads. If your bundle resources exceed the etcd size limits in the target cluster, consider using an OCI registry as the storage backend.
-endif::[] 
-
-ifeval::["{build-type}" == "community"]
-<<_continous_delivery,{product_name}>> stores Kubernetes bundle resources in etcd by default. However, etcd has strict size limits and is not optimized for large workloads. If your bundle resources exceed the etcd size limits in the target cluster, consider using an OCI registry as the storage backend.
-endif::[] 
-
+{product_name} stores Kubernetes bundle resources in etcd by default. However, etcd has strict size limits and is not optimized for large workloads. If your bundle resources exceed the etcd size limits in the target cluster, consider using an OCI registry as the storage backend.
 
 [NOTE]
 ====
@@ -25,13 +18,7 @@ image::/images/fleet-ociStorage-flow.png[A visual asset displaying the flow of F
 [NOTE]
 ====
 
-ifeval::["{build-type}" == "product"]
-<<_suse_rancher_prime_continous_delivery,{product_name}>> checks for the integrity of OCI artifacts and <<_suse_rancher_prime_continous_delivery,{product_name}>> tags OCI artifact as `latest`.
-endif::[] 
-
-ifeval::["{build-type}" == "community"]
-<<_continous_delivery,{product_name}>> checks for the integrity of OCI artifacts and <<_continous_delivery,{product_name}>> tags OCI artifact as `latest`.
-endif::[] 
+{product_name} checks for the integrity of OCI artifacts and {product_name} tags OCI artifact as `latest`.
 
 ====
 
@@ -40,29 +27,14 @@ endif::[]
 
 * A running OCI registry.
 * A Kubernetes secret with valid credentials.
-+
-ifeval::["{build-type}" == "product"]
-* <<_suse_rancher_prime_continous_delivery,{product_name}>> installation (v2.12.0 or later) .
-endif::[] 
-+
-ifeval::["{build-type}" == "community"]
-* <<_continous_delivery,{product_name}>> installation (v2.12.0 or later) .
-endif::[] 
+* {product_name} installation (v2.12.0 or later) .
 
 == How to enable OCI storage
 
 To enable OCI storage, create a secret that includes the necessary information and access options for the OCI registry. There are two ways of defining secrets:
 
-ifeval::["{build-type}" == "product"]
 * *Global secret:* A secret exactly named `ocistorage` in the same namespace as your ``GitRepo``s.
- ** This is the fallback secret. If no `GitRepo`-level secret is specified, <<_suse_rancher_prime_continous_delivery,{product_name}>> uses this secret for all ``GitRepo``s in the namespace.
-endif::[] 
-+
-ifeval::["{build-type}" == "community"]
-* *Global secret:* A secret exactly named `ocistorage` in the same namespace as your ``GitRepo``s.
- ** This is the fallback secret. If no `GitRepo`-level secret is specified, <<_continous_delivery,{product_name}>> uses this secret for all ``GitRepo``s in the namespace.
-endif::[] 
-+
+ ** This is the fallback secret. If no `GitRepo`-level secret is specified, {product_name} uses this secret for all ``GitRepo``s in the namespace.
 * *GitRepo-level secret:* A custom secret for specific `GitRepo` resouces.
  ** This is a user-defined secret can have any name and must be referenced in the `GitRepo` resource.
  ** Set the `ociRegistrySecret` field in the `GitRepo` spec to the secret's name.
@@ -70,16 +42,9 @@ endif::[]
 [NOTE]
 ====
 
-ifeval::["{build-type}" == "product"]
-<<_suse_rancher_prime_continous_delivery,{product_name}>> does not fall back to etcd if the secret is missing or invalid. Instead, it logs an error and skips the deployment.
-endif::[] 
-
-ifeval::["{build-type}" == "community"]
-<<_continous_delivery,{product_name}>> does not fall back to etcd if the secret is missing or invalid. Instead, it logs an error and skips the deployment.
-endif::[] 
+{product_name} does not fall back to etcd if the secret is missing or invalid. Instead, it logs an error and skips the deployment.
 
 ====
-
 
 Create a Kubernetes Secret that contains the registry address and optional credentials:
 
@@ -104,23 +69,11 @@ data:
 [NOTE]
 ====
 
-ifeval::["{build-type}" == "product"]
-The secret must have the type: `fleet.cattle.io/bundle-oci-storage/v1alpha1`. <<_suse_rancher_prime_continous_delivery,{product_name}>> requires this value and rejects any secret with a different type.
+The secret must have the type: `fleet.cattle.io/bundle-oci-storage/v1alpha1`. {product_name} requires this value and rejects any secret with a different type.
 
 ====
 
-Changing the secret does not trigger a redeployment. <<_suse_rancher_prime_continous_delivery,{product_name}>> uses the new registry only after a Git update or a manual force update.
-
-endif::[] 
-
-ifeval::["{build-type}" == "community"]
-The secret must have the type: `fleet.cattle.io/bundle-oci-storage/v1alpha1`. <<_continous_delivery,{product_name}>> requires this value and rejects any secret with a different type.
-
-====
-
-Changing the secret does not trigger a redeployment. <<_continous_delivery,{product_name}>> uses the new registry only after a Git update or a manual force update.
-
-endif::[] 
+Changing the secret does not trigger a redeployment. {product_name} uses the new registry only after a Git update or a manual force update.
 
 === Secret Field Reference
 
@@ -165,16 +118,7 @@ The fields you can configure are:
 | Not recommended. Allows insecure traffic. By default, `basicHTTP` is set to `false`.
 |===
 
-
-ifeval::["{build-type}" == "product"]
-== <<_suse_rancher_prime_continous_delivery,{product_name}>> Example
-
-endif::[] 
-
-ifeval::["{build-type}" == "community"]
-== <<_continous_delivery,{product_name}>> Example
-
-endif::[] 
+== {product_name} Example
 
 Consider the following `GitRepo` file:
 

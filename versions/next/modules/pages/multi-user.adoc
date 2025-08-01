@@ -1,14 +1,6 @@
 = Setup Multi User
 
-ifeval::["{build-type}" == "product"]
-<<_suse_rancher_prime_continous_delivery,{product_name}>> uses Kubernetes RBAC where possible.
-
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-<<_continous_delivery,{product_name}>> uses Kubernetes RBAC where possible.
-
-endif::[] 
+{product_name} uses Kubernetes RBAC where possible.
 
 One addition on top of RBAC is the xref:namespaces.adoc#restricting-gitrepos[`GitRepoRestriction`] resource, which can be used to control GitRepo resources in a namespace.
 
@@ -28,29 +20,13 @@ image::/images/FleetSharedClusters.svg[Shared Clusters]
 
 The isolation of tenants is not complete and relies on Kubernetes RBAC to be set up correctly. Without manual setup from an operator tenants can still deploy cluster wide resources. 
 
-ifeval::["{build-type}" == "product"]
-Even with the available <<_suse_rancher_prime_continous_delivery,{product_name}>> restrictions, users are only restricted to namespaces, but namespaces don't provide much isolation on their own. E.g. they can still consume as many resources as they like.
+Even with the available {product_name} restrictions, users are only restricted to namespaces, but namespaces don't provide much isolation on their own. E.g. they can still consume as many resources as they like.
 
-However, the existing <<_suse_rancher_prime_continous_delivery,{product_name}>> restrictions allow users to share clusters, anddeploy resources without conflicts.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-Even with the available <<_continous_delivery,{product_name}>> restrictions, users are only restricted to namespaces, but namespaces don't provide much isolation on their own. E.g. they can still consume as many resources as they like.
-
-However, the existing <<_continous_delivery,{product_name}>> restrictions allow users to share clusters, anddeploy resources without conflicts.
-endif::[] 
+However, the existing {product_name} restrictions allow users to share clusters, anddeploy resources without conflicts.
 
 ====
 
-ifeval::["{build-type}" == "product"]
-== Example <<_suse_rancher_prime_continous_delivery,{product_name}>> Standalone
-
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-== Example <<_continous_delivery,{product_name}>> Standalone
-
-endif::[] 
+== Example {product_name} Standalone
 
 This would create a user 'fleetuser', who can only manage GitRepo resources in the 'project1' namespace.
 

@@ -2,25 +2,13 @@
 
 == Status Fields
 
-ifeval::["{build-type}" == "product"]
-<<_suse_rancher_prime_continous_delivery,{product_name}>> reports most information via status fields on its custom resources. These fields are also used by the Rancher UI to display information about the state of the resources.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-<<_continous_delivery,{product_name}>> reports most information via status fields on its custom resources. These fields are also used by the Rancher UI to display information about the state of the resources.
-endif::[] 
+{product_name} reports most information via status fields on its custom resources. These fields are also used by the Rancher UI to display information about the state of the resources.
 
 See xref:ref-status-fields.adoc[status fields reference] for more information on status fields and conditions.
 
 == K8S Events
 
-ifeval::["{build-type}" == "product"]
-<<_suse_rancher_prime_continous_delivery,{product_name}>> generates k8s events a user can subscribe to. This is the list of events:
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-<<_continous_delivery,{product_name}>> generates k8s events a user can subscribe to. This is the list of events:
-endif::[] 
+{product_name} generates k8s events a user can subscribe to. This is the list of events:
 
 * `Created `- a new git cloning job was created
 * `GotNewCommit `- a git repository has a new commit
@@ -33,44 +21,23 @@ endif::[]
 
 == Metrics
 
-ifeval::["{build-type}" == "product"]
-<<_suse_rancher_prime_continous_delivery,{product_name}>> publishes prometheus metrics. They can be retrieved from these services:
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-<<_continous_delivery,{product_name}>> publishes prometheus metrics. They can be retrieved from these services:
-endif::[] 
+{product_name} publishes prometheus metrics. They can be retrieved from these services:
 
 * `monitoring-fleet-controller.cattle-fleet-system.svc.cluster.local:8080/metrics`
 * `monitoring-gitjob.cattle-fleet-system.svc.cluster.local:8081/metrics`
 
 The https://book.kubebuilder.io/reference/metrics-reference[collection of exported metrics] includes all the information from controller-runtime, like the number of reconciled resources, the number of errors, and the time it took to reconcile.
 
-ifeval::["{build-type}" == "product"]
-When the <<_suse_rancher_prime_continous_delivery,{product_name}>> is used by Rancher and the `rancher-monitoring` chart is installed, Prometheus is automatically configured to scrape the <<_suse_rancher_prime_continous_delivery,{product_name}>> metrics.
+When the {product_name} is used by Rancher and the `rancher-monitoring` chart is installed, Prometheus is automatically configured to scrape the {product_name} metrics.
 
-*_NOTE_* Depending on how many resources are handled by <<_suse_rancher_prime_continous_delivery,{product_name}>>, metrics may
-cause performance issues. If you have a lot of resources, you may want to disable metrics. You can do this by setting `metrics.enabled` in the `values.yaml` file to `false` when installing <<_suse_rancher_prime_continous_delivery,{product_name}>>.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-When the <<_continous_delivery,{product_name}>> is used by Rancher and the `rancher-monitoring` chart is installed, Prometheus is automatically configured to scrape the <<_continous_delivery,{product_name}>> metrics.
-
-*_NOTE_* Depending on how many resources are handled by <<_continous_delivery,{product_name}>>, metrics may
-cause performance issues. If you have a lot of resources, you may want to disable metrics. You can do this by setting `metrics.enabled` in the `values.yaml` file to `false` when installing <<_continous_delivery,{product_name}>>.
-endif::[] 
+*_NOTE_* Depending on how many resources are handled by {product_name}, metrics may
+cause performance issues. If you have a lot of resources, you may want to disable metrics. You can do this by setting `metrics.enabled` in the `values.yaml` file to `false` when installing {product_name}.
 
 === Grafana
 
 When using Grafana and Prometheus, e.g. from https://github.com/prometheus-community/helm-charts, some setup is needed to access metrics.
 
-ifeval::["{build-type}" == "product"]
-. Create a `ServiceMonitor` resource to scrape <<_suse_rancher_prime_continous_delivery,{product_name}>> metrics. Here is an example:
-endif::[] 
-
-ifeval::["{build-type}" == "community"]
-. Create a `ServiceMonitor` resource to scrape <<_continous_delivery,{product_name}>> metrics. Here is an example:
-endif::[] 
+. Create a `ServiceMonitor` resource to scrape {product_name} metrics. Here is an example:
 
 [,yaml]
 ----
@@ -124,14 +91,6 @@ spec:
     interval: 30s
 ----
 
-ifeval::["{build-type}" == "product"]
-And create it in <<_suse_rancher_prime_continous_delivery,{product_name}>>'s namespace, e.g. `cattle-fleet-system`: `kubectl create -f servicemonitor.yaml -n cattle-fleet-system`
-endif::[] 
-
-ifeval::["{build-type}" == "community"]
-And create it in <<_continous_delivery,{product_name}>>'s namespace, e.g. `cattle-fleet-system`: `kubectl create -f servicemonitor.yaml -n cattle-fleet-system`
-
-endif::[] 
-
+And create it in {product_name}'s namespace, e.g. `cattle-fleet-system`: `kubectl create -f servicemonitor.yaml -n cattle-fleet-system`
 
 . Build the Grafana dashboards and import them into Grafana. You can find the dashboards in the https://github.com/rancher/fleet-dashboards[fleet-dashboard repository]. Follow the README to build them.

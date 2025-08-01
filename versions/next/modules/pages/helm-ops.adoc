@@ -6,36 +6,13 @@ needing to set up a git repository.
 
 == Summary
 
-ifeval::["{build-type}" == "product"]
-
-When a `GitRepo` resource is created, <<_suse_rancher_prime_continous_delivery,{product_name}>>  monitors a git repository, creating one or more bundles from paths specified in the `GitRepo`, following a GitOps, or git-driven, approach to continuous deployment. This requires a git repository to be available, possibly containing `fleet.yaml` or other configuration files.
-
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-When a `GitRepo` resource is created, <<_continous_delivery,{product_name}>> monitors a git repository, creating one or more bundles from paths specified in the `GitRepo`, following a GitOps, or git-driven, approach to continuous deployment. This requires a git repository to be available, possibly containing `fleet.yaml` or other configuration files.
-
-endif::[]
+When a `GitRepo` resource is created, {product_name}  monitors a git repository, creating one or more bundles from paths specified in the `GitRepo`, following a GitOps, or git-driven, approach to continuous deployment. This requires a git repository to be available, possibly containing `fleet.yaml` or other configuration files.
 
 HelmOps, on the other hand, relies on a Helm registry as its source of truth, just as GitOps uses a git repository.
 Leveraging HelmOps is done by creating a `HelmOp` resource, with similar options to those available in a `GitRepo`
 resource and/or in a `fleet.yaml` file for targeting bundles to clusters, configuring chart values, etc.
 
-
-ifeval::["{build-type}" == "product"]
-
-HelmOps is the concept. A `HelmOp` is a custom Kubernetes resource managed by <<_suse_rancher_prime_continous_delivery,{product_name}>>.
-
-The <<_suse_rancher_prime_continous_delivery,{product_name}>> HelmOps controller will create lightweight bundles, pointing to referenced Helm charts, without downloading them.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-
-HelmOps is the concept. A `HelmOp` is a custom Kubernetes resource managed by <<_continous_delivery,{product_name}>>.
-
-The <<_continous_delivery,{product_name}>> HelmOps controller will create lightweight bundles, pointing to referenced Helm charts, without downloading 
-
-endif::[]
+HelmOps is the concept. A `HelmOp` is a custom Kubernetes resource managed by {product_name}. The {product_name} HelmOps controller will create lightweight bundles, pointing to referenced Helm charts, without downloading them.
 
 However, it will resolve chart versions to ensure that the same, and latest, version of a chart is deployed to all
 targeted downstream clusters. This applies to the following cases:
@@ -43,18 +20,7 @@ targeted downstream clusters. This applies to the following cases:
 * a wildcard or empty version is specified
 * a https://semver.org/[semantic versioning] constraint is specified, such as `0.1.x`, `< 2.0.0`. More information on supported constraints https://github.com/Masterminds/semver?tab=readme-ov-file#checking-version-constraints[here].
 
-
-ifeval::["{build-type}" == "product"]
-
-When constraints are invalid or no matching version can be found, <<_suse_rancher_prime_continous_delivery,{product_name}>> displays a descriptive error message.
-
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-
-When constraints are invalid or no matching version can be found, <<_continous_delivery,{product_name}>> displays a descriptive error message.
-
-endif::[]
+When constraints are invalid or no matching version can be found, {product_name} displays a descriptive error message.
 
 When using this feature, Helm charts are downloaded from downstream clusters, which must therefore have access to Helm
 registries.
@@ -84,18 +50,8 @@ spec:
 For private charts, this requires a Helm access secret (referenced by field `helmSecretName`) to be created in the same
 namespace as the `HelmOp` resource.
 
+The {product_name} HelmOps controller will take care of copying that secret to targeted downstream clusters, enabling the Fleet agent to access the registry.
 
-ifeval::["{build-type}" == "product"]
-
-The <<_suse_rancher_prime_continous_delivery,{product_name}>> HelmOps controller will take care of copying that secret to targeted downstream clusters, enabling the Fleet agent to access the registry.
-
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-
-The <<_continous_delivery,{product_name}>> HelmOps controller will take care of copying that secret to targeted downstream clusters, enabling the Fleet agent to access the registry.
-
-endif::[]
 
 == Supported use cases
 
@@ -103,17 +59,7 @@ With 3 fields available to reference a Helm chart, let's clarify a few rules.
 As per the Helm install https://helm.sh/docs/helm/helm_install/[documentation], there are 6 ways of expressing a chart
 to install. 
 
-ifeval::["{build-type}" == "product"]
-
-3 of them use either repository aliases or the local filesystem, which are not available in <<_suse_rancher_prime_continous_delivery,{product_name}>>'s HelmOps context. This leaves us with 3 options:
-
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-
-3 of them use either repository aliases or the local filesystem, which are not available in <<_continous_delivery,{product_name}>>'s HelmOps context. This leaves us with 3 options:
-
-endif::[]
+3 of them use either repository aliases or the local filesystem, which are not available in {product_name}'s HelmOps context. This leaves us with 3 options:
 
 === Absolute URL
 
@@ -138,18 +84,7 @@ bundle will be created, aborting deployment.
 A Helm chart can also be referenced through its repository and chart name, with an optional version, which may be a
 static version or a version constraint.
 
-ifeval::["{build-type}" == "product"]
-
-This is where polling can make sense, because referencing the chart using a repository allows <<_suse_rancher_prime_continous_delivery,{product_name}>> to check the repository's `index.yaml` for available versions matching the `version` field.
-
-
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-
-This is where polling can make sense, because referencing the chart using a repository allows <<_continous_delivery,{product_name}>> to check the repository's `index.yaml` for available versions matching the `version` field.
-
-endif::[]
+This is where polling can make sense, because referencing the chart using a repository allows {product_name} to check the repository's `index.yaml` for available versions matching the `version` field.
 
 Example:
 
@@ -161,16 +96,7 @@ Example:
     version: '1.2.3'
 ----
 
-ifeval::["{build-type}" == "product"]
-
-In this case, only the `version` field may be empty. If any of the `chart` or `repo` field is empty, <<_suse_rancher_prime_continous_delivery,{product_name}>> sets an error in the HelmOp status and no bundle will be created.
-
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-In this case, only the `version` field may be empty. If any of the `chart` or `repo` field is empty, <<_continous_delivery,{product_name}>> sets an error in the HelmOp status and no bundle will be created.
-
-endif::[]
+In this case, only the `version` field may be empty. If any of the `chart` or `repo` field is empty, {product_name} sets an error in the HelmOp status and no bundle will be created.
 
 === OCI registry
 
@@ -192,15 +118,7 @@ and no bundle being created.
 [NOTE]
 ====
 
-ifeval::["{build-type}" == "product"]
-In this case, <<_suse_rancher_prime_continous_delivery,{product_name}>> will be downloading OCI artifacts. This means that:
-
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-In this case, <<_continous_delivery,{product_name}>> will be downloading OCI artifacts. This means that:
-
-endif::[]
+In this case, {product_name} will be downloading OCI artifacts. This means that:
 
 * the `version` field represents an OCI artifact's tag, which may be different to the actual version of the
 chart stored in the OCI artifact.
@@ -211,15 +129,7 @@ a single Helm chart.
 
 == Polling
 
-ifeval::["{build-type}" == "product"]
-<<_suse_rancher_prime_continous_delivery,{product_name}>> can poll the referenced Helm registry, periodically checking if new versions are available.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-<<_continous_delivery,{product_name}>> can poll the referenced Helm registry, periodically checking if new versions are available.
-endif::[]
-
-Of course, this only makes sense if the `version` field contains a version constraint, which may resolve to multiple
+{product_name} can poll the referenced Helm registry, periodically checking if new versions are available. Of course, this only makes sense if the `version` field contains a version constraint, which may resolve to multiple
 versions.
 
 === How to enable it
@@ -227,15 +137,7 @@ versions.
 Polling involves a `pollingInterval` field, similar to what exists for GitOps. However, in the HelmOps case, the default
 polling interval is 0 seconds, meaning that polling will be disabled.
 
-ifeval::["{build-type}" == "product"]
-The following conditions must be met on a HelmOp resource for <<_suse_rancher_prime_continous_delivery,{product_name}>> to enable polling on it:
-
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-The following conditions must be met on a HelmOp resource for <<_continous_delivery,{product_name}>> to enable polling on it:
-
-endif::[]
+The following conditions must be met on a HelmOp resource for {product_name} to enable polling on it:
 
 * the `pollingInterval` field is set to a non-zero duration (e.g. `10s`, `1m`, etc)
 * the `version` field is set to a valid semantic versioning constraint (e.g. `2.x.x`, `< 1.0`), not a static version
@@ -243,15 +145,7 @@ endif::[]
 
 === What it does
 
-ifeval::["{build-type}" == "product"]
-When polling is enabled, <<_suse_rancher_prime_continous_delivery,{product_name}>> does the following at the configured interval:
-
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-When polling is enabled, <<_continous_delivery,{product_name}>> does the following at the configured interval:
-
-endif::[]
+When polling is enabled, {product_name} does the following at the configured interval:
 
 * checking the referenced Helm registry for the latest version matching the version constraint configured in the
 `version` field
@@ -270,15 +164,7 @@ Creating a HelmOp resource leads to a bundle being created, if Helm options are 
 The status of that bundle will evolve over time, as bundle deployments are created from it, for each target cluster, and
 as these bundle deployments' statuses themselves evolve and are propagated back to the bundle.
 
-ifeval::["{build-type}" == "product"]
-<<_suse_rancher_prime_continous_delivery,{product_name}>> propagates updates from the bundle status to the status of the HelmOp resource itself.
-
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-<<_continous_delivery,{product_name}>> propagates updates from the bundle status to the status of the HelmOp resource itself.
-
-endif::[]
+{product_name} propagates updates from the bundle status to the status of the HelmOp resource itself.
 
 This includes:
 

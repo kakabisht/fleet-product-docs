@@ -1,14 +1,6 @@
 = Bundle Resource
 
-ifeval::["{build-type}" == "product"]
-Bundles are automatically created by <<_suse_rancher_prime_continous_delivery,{product_name}>> when a `GitRepo` is created.
-
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-Bundles are automatically created by <<_continous_delivery,{product_name}>> when a `GitRepo` is created.
-
-endif::[] 
+Bundles are automatically created by {product_name} when a `GitRepo` is created.
 
 The content of the resource corresponds to the xref:ref-crds#bundlespec[BundleSpec].
 For more information on how to use the Bundle resource xref:bundle-add.adoc[Create a Bundle Resource].

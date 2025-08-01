@@ -1,25 +1,12 @@
 = Mapping to Downstream Clusters
 
-ifeval::["{build-type}" == "product"]
-https://ranchermanager.docs.rancher.com/integrations-in-rancher/fleet[<<_suse_rancher_prime_continous_delivery,{product_name}>> ] allows users to manage clusters easily as if they were one cluster. Users can deploy bundles, which can be comprised of deployment manifests or any other Kubernetes resource, across clusters using grouping configuration.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-https://ranchermanager.docs.rancher.com/integrations-in-rancher/fleet[<<_continous_delivery,{product_name}>>] allows users to manage clusters easily as if they were one cluster. Users can deploy bundles, which can be comprised of deployment manifests or any other Kubernetes resource, across clusters using grouping configuration.
-
-endif::[]
-
+https://ranchermanager.docs.rancher.com/integrations-in-rancher/fleet[{product_name} ] allows users to manage clusters easily as if they were one cluster. Users can deploy bundles, which can be comprised of deployment manifests or any other Kubernetes resource, across clusters using grouping configuration.
 
 [IMPORTANT]
 ====
 
-ifeval::["{build-type}" == "product"]
-This approach only applies if you are running <<_suse_rancher_prime_continous_delivery,{product_name}>> in a multi-cluster style. If no targets are specified, i.e. when using a single-cluster, the bundles target the default cluster group.
-endif::[]
+This approach only applies if you are running {product_name} in a multi-cluster style. If no targets are specified, i.e. when using a single-cluster, the bundles target the default cluster group.
 
-ifeval::["{build-type}" == "community"]
-This approach only applies if you are running <<_continous_delivery,{product_name}>> in a multi-cluster style. If no targets are specified, i.e. when using a single-cluster, the bundles target the default cluster group.
-endif::[]
 ====
 
 *Multi-cluster Only*:
@@ -96,14 +83,7 @@ targets:
   - clusterName: fleetname
 ----
 
-ifeval::["{build-type}" == "product"]
-When using <<_suse_rancher_prime_continous_delivery,{product_name}>> in Rancher, make sure to put the name of the `clusters.fleet.cattle.io` resource.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-This approach only applies if you are running 
-When using <<_continous_delivery,{product_name}>>  in Rancher, make sure to put the name of the `clusters.fleet.cattle.io` resource.
-endif::[]
+When using {product_name} in Rancher, make sure to put the name of the `clusters.fleet.cattle.io` resource.
 
 == Default Target
 
@@ -137,20 +117,9 @@ To demonstrate how to deploy Kubernetes manifests across different clusters with
 * After deploying to the `test` cluster, database replication is enabled.
 * After deploying to the `prod` cluster, database replication is enabled and Load balancer services are exposed.
 
+*Advantage of {product_name} :*
 
-ifeval::["{build-type}" == "product"]
-*Advantage of <<_suse_rancher_prime_continous_delivery,{product_name}>> :*
-
-Instead of deploying the app on each cluster, <<_suse_rancher_prime_continous_delivery,{product_name}>> allows you to deploy across all clusters following these steps:
-
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-*Advantage of <<_continous_delivery,{product_name}>> :* 
-
-Instead of deploying the app on each cluster, <<_continous_delivery,{product_name}>> allows you to deploy across all clusters following these steps:
-
-endif::[]
+Instead of deploying the app on each cluster, {product_name} allows you to deploy across all clusters following these steps:
 
 . Deploy gitRepo `https://github.com/rancher/fleet-examples.git` and specify the path `multi-cluster/helm`.
 . Under `multi-cluster/helm`, a Helm chart will deploy the frontend app service and backend database service.
@@ -188,15 +157,7 @@ targetCustomizations:
 
 You deploy the Helm chart with your customized `values.yaml` to the different clusters.
 
-ifeval::["{build-type}" == "product"]
-NOTE: Configuration management is not limited to deployments but can be expanded to general configuration management. <<_suse_rancher_prime_continous_delivery,{product_name}>> is able to apply configuration management through customization among any set of clusters automatically.
-
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-NOTE: Configuration management is not limited to deployments but can be expanded to general configuration management. <<_continous_delivery,{product_name}>> is able to apply configuration management through customization among any set of clusters automatically.
-
-endif::[]
+NOTE: Configuration management is not limited to deployments but can be expanded to general configuration management. {product_name} is able to apply configuration management through customization among any set of clusters automatically.
 
 === Supported Customizations
 
@@ -224,14 +185,8 @@ endif::[]
 Overriding the version of a Helm chart via target customizations will lead to bundles containing _all_ versions, ie the
 default one and the custom one(s), of the chart, to accommodate all clusters. This in turn means that Fleet will
 deploy larger bundles.
-+
-ifeval::["{build-type}" == "product"]
-As <<_suse_rancher_prime_continous_delivery,{product_name}>> stores bundles via etcd, this may cause issues on some clusters where resultant bundle sizes may exceed etcd's configured maximum blob size. See https://github.com/rancher/fleet/issues/1650[this issue] for more details.
-endif::[]
 
-ifeval::["{build-type}" == "community"]
-As <<_continous_delivery,{product_name}>> stores bundles via etcd, this may cause issues on some clusters where resultant bundle sizes may exceed etcd's configured maximum blob size. See https://github.com/rancher/fleet/issues/1650[this issue] for more details.
-endif::[]
+As {product_name} stores bundles via etcd, this may cause issues on some clusters where resultant bundle sizes may exceed etcd's configured maximum blob size. See https://github.com/rancher/fleet/issues/1650[this issue] for more details.
 
 ====
 

@@ -1,21 +1,22 @@
 site:
   title: Fleet
   url: /
-  start_page: next@fleet:index.adoc
+  start_page: next@fleet::index.adoc
 
 content:
   sources:
     - url: ./
-      start_paths: [versions/next, versions/v0.12]
+      # start_paths: [docs/next, docs/v0.12]
       branches: HEAD
+      start_path: ./docs/next/
+
 
 # Description: SUSE UI bundle
 ui:
   bundle:
-    url: ./dsc-style-bundle/ui-bundle.zip
+    url: ./dsc-style-bundle/aiyo-ui-bundle.zip
     snapshot: true
-  supplemental_files: ./turtles-supplemental-files
-
+  # supplemental_files: ./turtles-supplemental-files
 
 asciidoc:
   attributes:

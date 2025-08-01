@@ -1,32 +1,13 @@
 = Troubleshooting
 
-ifeval::["{build-type}" == "product"]
-This section contains commands and tips to troubleshoot <<_suse_rancher_prime_continous_delivery,{product_name}>>.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-This section contains commands and tips to troubleshoot <<_continous_delivery,{product_name}>>.
-endif::[] 
+This section contains commands and tips to troubleshoot {product_name}.
 
 == Where to look for root causes of issues
 
+The first things to check when {product_name} behaves unexpectedly would be:
 
-ifeval::["{build-type}" == "product"]
-The first things to check when <<_suse_rancher_prime_continous_delivery,{product_name}>> behaves unexpectedly would be:
-
-* `fleet-controller` logs on the management cluster: has <<_suse_rancher_prime_continous_delivery,{product_name}>> failed to reconcile any resource's (bundle, bundledeployment) current state with its expected state?
-* `gitjob` pod logs on the management cluster: has <<_suse_rancher_prime_continous_delivery,{product_name}>> encountered any issue while creating jobs to generate new bundles for new commits found in monitored git repositories?
-+
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-The first things to check when <<_continous_delivery,{product_name}>> behaves unexpectedly would be:
-
-* `fleet-controller` logs on the management cluster: has <<_continous_delivery,{product_name}>> failed to reconcile any resource's (bundle, bundledeployment) current state with its expected state?
-* `gitjob` pod logs on the management cluster: has <<_continous_delivery,{product_name}>> encountered any issue while creating jobs to generate new bundles for new commits found in monitored git repositories?
-+
-endif::[] 
-
+* `fleet-controller` logs on the management cluster: has {product_name} failed to reconcile any resource's (bundle, bundledeployment) current state with its expected state?
+* `gitjob` pod logs on the management cluster: has {product_name} encountered any issue while creating jobs to generate new bundles for new commits found in monitored git repositories?
 * status of the `GitRepo` for which resources are not properly deployed:
  ** How many `Ready Bundle Deployments` does it list?
  ** How many bundle deployments are listed as expected? How many do you expect to see?
@@ -39,13 +20,7 @@ endif::[]
 If the issue is specific to a target cluster, one might want to check Fleet agent logs on that cluster: has Fleet failed
 to deploy a bundle deployment on that cluster?
 
-ifeval::["{build-type}" == "product"]
-If the issue is specific to a target cluster, one might want to check Fleet agent logs on that cluster: has <<_suse_rancher_prime_continous_delivery,{product_name}>> failed.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-If the issue is specific to a target cluster, one might want to check Fleet agent logs on that cluster: has <<_continous_delivery,{product_name}>> failed.
-endif::[] 
+If the issue is specific to a target cluster, one might want to check Fleet agent logs on that cluster: has {product_name} failed.
 
 The next section explains how to run all these checks.
 
@@ -132,25 +107,13 @@ fleet-controller-64f49d756b-n57wq   1/1     Running   0          3m21s
 
 === Enable debug logging for `fleet-controller` and `fleet-agent`?
 
-ifeval::["{build-type}" == "product"]
-Available in Rancher v2.6.3 (<<_suse_rancher_prime_continous_delivery,{product_name}>> v0.3.8), the ability to enable debug logging has been added.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-Available in Rancher v2.6.3 (<<_continous_delivery,{product_name}>> v0.3.8), the ability to enable debug logging has been added.
-endif::[] 
+Available in Rancher v2.6.3 ({product_name} v0.3.8), the ability to enable debug logging has been added.
 
 * Go to the *Dashboard*, then click on the *local cluster* in the left navigation menu
 * Select *Apps & Marketplace*, then *Installed Apps* from the dropdown
 * From there, you will upgrade the Fleet chart with the value `debug=true`. You can also set `debugLevel=5` if desired.
 
-ifeval::["{build-type}" == "product"]
-==== Via <<_suse_rancher_prime_continous_delivery,{product_name}>> Install Options
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-==== Via <<_continous_delivery,{product_name}>> Install Options
-endif::[] 
+==== Via {product_name} Install Options
 
 You can create a config map `rancher-config` in the `cattle-system` namespace with xref:ref-configuration.adoc#configure-fleet-install-options-in-rancher[Fleet Installation Options].
 
@@ -170,13 +133,7 @@ data:
     propagateDebugSettingsToAgents: true
 ----
 
-ifeval::["{build-type}" == "product"]
-Modifying the config will re-install <<_suse_rancher_prime_continous_delivery,{product_name}>> and re-deploy the agents.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-Modifying the config will re-install <<_continous_delivery,{product_name}>> and re-deploy the agents.
-endif::[] 
+Modifying the config will re-install {product_name} and re-deploy the agents.
 
 === Record Resource Changes Over Time
 
@@ -194,13 +151,7 @@ for kind in gitrepos.fleet.cattle.io bundles.fleet.cattle.io bundledeployments.f
 done ; wait
 ----
 
-ifeval::["{build-type}" == "product"]
-== Additional Solutions for Other <<_suse_rancher_prime_continous_delivery,{product_name}>> Issues
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-== Additional Solutions for Other <<_continous_delivery,{product_name}>> Issues
-endif::[] 
+== Additional Solutions for Other {product_name} Issues
 
 === Naming conventions for CRDs
 
@@ -210,29 +161,15 @@ endif::[]
 
 === HTTP secrets in Github
 
-ifeval::["{build-type}" == "product"]
-When testing <<_suse_rancher_prime_continous_delivery,{product_name}>> with private git repositories, you will notice that HTTP secrets are no longer supported in Github. To work around this issue, follow these steps:
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-When testing <<_continous_delivery,{product_name}>> with private git repositories, you will notice that HTTP secrets are no longer supported in Github. To work around this issue, follow these steps:
-endif::[] 
+When testing {product_name} with private git repositories, you will notice that HTTP secrets are no longer supported in Github. To work around this issue, follow these steps:
 
 . Create a https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token[personal access token] in Github.
 . In Rancher, create an HTTP https://ranchermanager.docs.rancher.com/how-to-guides/new-user-guides/kubernetes-resources-setup/secrets[secret] with your Github username.
 . Use your token as the secret.
 
-ifeval::["{build-type}" == "product"]
-=== <<_suse_rancher_prime_continous_delivery,{product_name}>> fails with bad response code: 403
+=== {product_name} fails with bad response code: 403
 
-If your GitJob returns the error below, the problem may be that <<_suse_rancher_prime_continous_delivery,{product_name}>> cannot access the Helm repo you specified in your xref:ref-fleet-yaml.adoc[`fleet.yaml`]:
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-=== <<_continous_delivery,{product_name}>> fails with bad response code: 403
-
-If your GitJob returns the error below, the problem may be that <<_continous_delivery,{product_name}>> cannot access the Helm repo you specified in your xref:ref-fleet-yaml.adoc[`fleet.yaml`]:
-endif::[] 
+If your GitJob returns the error below, the problem may be that {product_name} cannot access the Helm repo you specified in your xref:ref-fleet-yaml.adoc[`fleet.yaml`]:
 
 [,bash]
 ----
@@ -269,21 +206,11 @@ Certificate:
 ----
 
 
-<<_continous_delivery,{product_name}>>
+{product_name}
 
-ifeval::["{build-type}" == "product"]
-=== <<_suse_rancher_prime_continous_delivery,{product_name}>> deployment stuck in modified state
+=== {product_name} deployment stuck in modified state
 
-When you deploy bundles to <<_suse_rancher_prime_continous_delivery,{product_name}>>, some of the components are modified, and this causes the "modified" flag in the <<_suse_rancher_prime_continous_delivery,{product_name}>> environment.
-
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-=== <<_continous_delivery,{product_name}>> deployment stuck in modified state
-
-When you deploy bundles to <<_continous_delivery,{product_name}>>, some of the components are modified, and this causes the "modified" flag in the <<_continous_delivery,{product_name}>> environment.
-
-endif::[] 
+When you deploy bundles to {product_name}, some of the components are modified, and this causes the "modified" flag in the {product_name} environment.
 
 To ignore the modified flag for the differences between the Helm install generated by `fleet.yaml` and the resource in your cluster, add a `diff.comparePatches` to the `fleet.yaml` for your Deployment, as shown in this example:
 
@@ -355,15 +282,7 @@ You will need to re-import and restart the registration process: Select *Cluster
 ====
 
 *WaitCheckIn status for Rancher v2.5*:
-ifeval::["{build-type}" == "product"]
-The cluster will show in `WaitCheckIn` status because the `fleet-controller` is attempting to communicate with <<_suse_rancher_prime_continous_delivery,{product_name}>> using the Rancher service IP. However, <<_suse_rancher_prime_continous_delivery,{product_name}>> must communicate directly with Rancher via the Kubernetes service DNS using service discovery, not through the proxy.
-
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-The cluster will show in `WaitCheckIn` status because the `fleet-controller` is attempting to communicate with <<_continous_delivery,{product_name}>> using the Rancher service IP. However, <<_continous_delivery,{product_name}>> must communicate directly with Rancher via the Kubernetes service DNS using service discovery, not through the proxy.
-
-endif::[] 
+The cluster will show in `WaitCheckIn` status because the `fleet-controller` is attempting to communicate with {product_name} using the Rancher service IP. However, {product_name} must communicate directly with Rancher via the Kubernetes service DNS using service discovery, not through the proxy.
 
 For more, see the https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/other-installation-methods/rancher-behind-an-http-proxy[Rancher docs].
 ====

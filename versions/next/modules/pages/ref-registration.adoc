@@ -66,14 +66,7 @@ Detailed analysis of the registration process for clusters. This shows the inter
 
 It is important to note that there are multiple ways to start this:
 
-ifeval::["{build-type}" == "product"]
-* Creating a bootstrap config. <<_suse_rancher_prime_continous_delivery,{product_name}>> does this for the local agent.
-endif::[]
-+
-ifeval::["{build-type}" == "community"]
-* Creating a bootstrap config. <<_continous_delivery,{product_name}>> does this for the local agent.
-endif::[] 
-+
+* Creating a bootstrap config. {product_name} does this for the local agent.
 * Creating a `Cluster` resource with a kubeconfig. Rancher does this for downstream clusters. Refer to xref:cluster-registration.adoc#manager-initiated[manager-initiated registration].
 * Create a `ClusterRegistrationToken` resource, optionally create a `Cluster` resource for a pre-defined (`clientID`) cluster. Refer to xref:cluster-registration.adoc#agent-initiated[agent-initiated registration].
 
@@ -104,13 +97,7 @@ image::/images/FleetRegistrationSecrets.svg[Registration Secrets]
 
 Rancher installs the fleet helm chart. The API server URL and CA are https://github.com/rancher/rancher/blob/main/pkg/controllers/dashboard/fleetcharts/controller.go#L113-L114[derived from Rancher's settings].
 
-ifeval::["{build-type}" == "product"]
-<<_suse_rancher_prime_continous_delivery,{product_name}>> passes these values to a Fleet agent, so it can connect back to the Fleet controller.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-<<_continous_delivery,{product_name}>> passes these values to a Fleet agent, so it can connect back to the Fleet controller.
-endif::[] 
+{product_name} passes these values to a Fleet agent, so it can connect back to the Fleet controller.
 
 === Import Cluster into Rancher
 
@@ -122,10 +109,4 @@ The Rancher agent starts up and reports downstream's kubeconfig to upstream.
 
 Rancher then creates the fleet Cluster resource, which references a https://github.com/rancher/rancher/blob/871b6d9137246bd93733f01184ea435f40c5d56c/pkg/provisioningv2/kubeconfig/manager.go#L69[kubeconfig secret].
 
-ifeval::["{build-type}" == "product"]
-<<_suse_rancher_prime_continous_delivery,{product_name}>> uses this kubeconfig to deploy the agent on the downstream cluster.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-<<_continous_delivery,{product_name}>> uses this kubeconfig to deploy the agent on the downstream cluster.
-endif::[] 
+{product_name} uses this kubeconfig to deploy the agent on the downstream cluster.

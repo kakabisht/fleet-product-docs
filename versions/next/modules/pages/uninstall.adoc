@@ -5,23 +5,11 @@
 Removing the CRDs will remove all deployed workloads.
 ====
 
+== {product_name} Standalone
 
-ifeval::["{build-type}" == "product"]
+{product_name} is packaged as two Helm charts so uninstall is accomplished by uninstalling the appropriate Helm charts.
 
-== <<_suse_rancher_prime_continous_delivery,{product_name}>> Standalone
-
-<<_suse_rancher_prime_continous_delivery,{product_name}>> is packaged as two Helm charts so uninstall is accomplished by uninstalling the appropriate Helm charts.
-
-However <<_suse_rancher_prime_continous_delivery,{product_name}>> uses https://kubernetes.io/docs/concepts/overview/working-with-objects/finalizers/[finalizers], so uninstall workloads first to give the Fleet controllers time to clean up.
-
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-<<_continous_delivery,{product_name}>> is packaged as two Helm charts so uninstall is accomplished by uninstalling the appropriate Helm charts.
-
-However <<_continous_delivery,{product_name}>> uses https://kubernetes.io/docs/concepts/overview/working-with-objects/finalizers/[finalizers], so uninstall workloads first to give the Fleet controllers time to clean up.
-
-endif::[] 
+However {product_name} uses https://kubernetes.io/docs/concepts/overview/working-with-objects/finalizers/[finalizers], so uninstall workloads first to give the Fleet controllers time to clean up.
 
 [,bash]
 ----
@@ -71,19 +59,9 @@ kubectl delete ns cattle-fleet-clusters-system
 kubectl delete ns -l "fleet.cattle.io/managed=true"
 ----
 
-ifeval::["{build-type}" == "product"]
-== <<_suse_rancher_prime_continous_delivery,{product_name}>> in Rancher
+== {product_name} in Rancher
 
-<<_suse_rancher_prime_continous_delivery,{product_name}>> in Rancher cannot be uninstalled, without uninstalling Rancher. However, the GitOps feature can be disabled.
+{product_name} in Rancher cannot be uninstalled, without uninstalling Rancher. However, the GitOps feature can be disabled.
 When disabled, the gitjob deployment is no longer deployed into the Rancher server's local cluster, and continuous-delivery is not shown in the Rancher UI.
-
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-== <<_continous_delivery,{product_name}>> in Rancher
-
-<<_continous_delivery,{product_name}>> in Rancher cannot be uninstalled, without uninstalling Rancher. However, the GitOps feature can be disabled.
-When disabled, the gitjob deployment is no longer deployed into the Rancher server's local cluster, and continuous-delivery is not shown in the Rancher UI.
-endif::[] 
 
 For more information, refer to https://documentation.suse.com/cloudnative/rancher-manager/latest/en/rancher-admin/experimental-features/continuous-delivery.html[Continuous Delivery in Rancher]

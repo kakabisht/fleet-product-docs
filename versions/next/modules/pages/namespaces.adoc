@@ -95,27 +95,12 @@ cluster. If an allowedTargetNamespaces restriction is present, all `GitRepos`
 must specify a `targetNamespace` and the specified namespace must be in the
 allow list. This also prevents the creation of cluster wide resources.
 
-ifeval::["{build-type}" == "product"]
-== <<_suse_rancher_prime_continous_delivery,{product_name}>> Namespaces
-
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-== <<_continous_delivery,{product_name}>> Namespaces
-
-endif::[] 
+== {product_name} Namespaces
 
 All types in the Fleet manager are namespaced. The namespaces of a custom
 resource, e.g. GitRepo, does not influence the namespace of deployed resources.
 
-ifeval::["{build-type}" == "product"]
-Understanding how namespaces are used in the Fleet manager is important to understand the security model and how one can use <<_suse_rancher_prime_continous_delivery,{product_name}>> in a multi-tenant fashion.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-Understanding how namespaces are used in the Fleet manager is important to understand the security model and how one can use <<_continous_delivery,{product_name}>> in a multi-tenant fashion.
-endif::[] 
-
+Understanding how namespaces are used in the Fleet manager is important to understand the security model and how one can use {product_name} in a multi-tenant fashion.
 
 image::/images/FleetNamespaces.svg[Namespace]
 
@@ -148,13 +133,7 @@ Deleting the workspace, cluster registration namespace, will delete all the clus
 This will uninstall all deployed bundles, except for the fleet agent, from the deleted clusters.
 ====
 
-ifeval::["{build-type}" == "product"]
-If you are using <<_suse_rancher_prime_continous_delivery,{product_name}>> in a xref:concepts.adoc[single cluster] style, the namespace will always be *fleet-local*. For more information, refer to xref:namespaces#fleet-local[fleet-local namespace].
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-If you are using <<_continous_delivery,{product_name}>> in a xref:concepts.adoc[single cluster] style, the namespace will always be *fleet-local*. For more information, refer to xref:namespaces#fleet-local[fleet-local namespace].
-endif::[] 
+If you are using {product_name} in a xref:concepts.adoc[single cluster] style, the namespace will always be *fleet-local*. For more information, refer to xref:namespaces#fleet-local[fleet-local namespace].
 
 For a xref:concepts.adoc[multi-cluster] style, please ensure you use the correct
 repo that will map to the right target clusters.
@@ -167,16 +146,7 @@ The *fleet-local* namespace is a special namespace used for the single cluster
 use case or to bootstrap the configuration of the Fleet manager.
 Access to the local cluster should be limited to operators.
 
-
-ifeval::["{build-type}" == "product"]
-When <<_suse_rancher_prime_continous_delivery,{product_name}>> is installed the `fleet-local` namespace is created along with one `Cluster` called `local` and one `ClusterGroup` called `default`. 
-
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-When <<_continous_delivery,{product_name}>> is installed the `fleet-local` namespace is created along with one `Cluster` called `local` and one `ClusterGroup` called `default`. 
-
-endif::[] 
+When {product_name} is installed the `fleet-local` namespace is created along with one `Cluster` called `local` and one `ClusterGroup` called `default`. 
 
 If no targets are specified on a `GitRepo`, it is by default targeted to the `ClusterGroup`named `default`. This means that all `GitRepos` created in `fleet-local` will automatically target the `local` `Cluster`. The `local` `Cluster` refers to the
 cluster the Fleet manager is running on.

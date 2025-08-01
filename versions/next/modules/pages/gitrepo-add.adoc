@@ -16,14 +16,7 @@ Git repos are added to the Fleet manager using the `GitRepo` custom resource typ
 * `fleet-default` will contain all the downstream clusters that are already registered through Rancher.
 * `fleet-local` will contain the local cluster by default.
 
-
-ifeval::["{build-type}" == "product"]
-If you are using <<_suse_rancher_prime_continous_delivery,{product_name}>> in a xref:concepts.adoc[single cluster] style, the namespace will always be *fleet-local*. Refer to xref:namespaces#fleet-local[fleet-local namepsace] for more information.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-If you are using <<_continous_delivery,{product_name}>> in a xref:concepts.adoc[single cluster] style, the namespace will always be *fleet-local*. Refer to xref:namespaces#fleet-local[fleet-local namepsace] for more information.
-endif::[]
+If you are using {product_name} in a xref:concepts.adoc[single cluster] style, the namespace will always be *fleet-local*. Refer to xref:namespaces#fleet-local[fleet-local namepsace] for more information.
 
 For a xref:./concepts.adoc[multi-cluster] style, please ensure you use the correct repo that will map to the right target clusters.
 
@@ -39,13 +32,7 @@ Workload namespace definitions can be restricted with `allowedTargetNamespaces` 
 
 == Adding A Private Git Repository
 
-ifeval::["{build-type}" == "product"]
-<<_suse_rancher_prime_continous_delivery,{product_name}>> supports both HTTP and SSH auth keys for private repositories. To use this, you have to create a secret in the `GitRepo`'s namespace.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-<<_continous_delivery,{product_name}>> supports both HTTP and SSH auth keys for private repositories. To use this, you have to create a secret in the `GitRepo`'s namespace.
-endif::[]
+{product_name} supports both HTTP and SSH auth keys for private repositories. To use this, you have to create a secret in the `GitRepo`'s namespace.
 
 For example, to generate a private SSH key:
 
@@ -102,21 +89,11 @@ The key has to be in PEM format.
 [CAUTION]
 ====
 
-ifeval::["{build-type}" == "product"]
-If you don't add one or more public keys into the secret, any server's public key will be trusted and added. (`ssh -o stricthostkeychecking=yes` will be used), unless you install <<_suse_rancher_prime_continous_delivery,{product_name}>> with chart value `insecureSkipHostKeyChecks` set to `false`.
+If you don't add one or more public keys into the secret, any server's public key will be trusted and added. (`ssh -o stricthostkeychecking=yes` will be used), unless you install {product_name} with chart value `insecureSkipHostKeyChecks` set to `false`.
 
-<<_suse_rancher_prime_continous_delivery,{product_name}>> supports injecting `known_hosts` into an SSH secret. Here is an example of how to add it:
-
-====
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-If you don't add one or more public keys into the secret, any server's public key will be trusted and added. (`ssh -o stricthostkeychecking=yes` will be used), unless you install <<_continous_delivery,{product_name}>> with chart value `insecureSkipHostKeyChecks` set to `false`.
-
-<<_continous_delivery,{product_name}>> supports injecting `known_hosts` into an SSH secret. Here is an example of how to add it:
+{product_name} supports injecting `known_hosts` into an SSH secret. Here is an example of how to add it:
 
 ====
-endif::[]
 
 Fetch the public key hash (taking Github as an example)
 
@@ -142,39 +119,19 @@ stringData:
 
 ==== Strict host key checks
 
-
-ifeval::["{build-type}" == "product"]
-Chart value `insecureSkipHostKeyChecks` defines how <<_suse_rancher_prime_continous_delivery,{product_name}>> behaves with regards to `known_hosts` when establishing SSH
+Chart value `insecureSkipHostKeyChecks` defines how {product_name} behaves with regards to `known_hosts` when establishing SSH
 connections.
 
-When that value is set to `false`, <<_suse_rancher_prime_continous_delivery,{product_name}>> enforces strict host key checks, meaning that it will fail to establish any SSH connections to hosts for which no matching `known_hosts` entry can be found.
-This is the default behaviour from <<_suse_rancher_prime_continous_delivery,{product_name}>> v0.13 onwards.
-endif::[]
+When that value is set to `false`, {product_name} enforces strict host key checks, meaning that it will fail to establish any SSH connections to hosts for which no matching `known_hosts` entry can be found.
+This is the default behaviour from {product_name} v0.13 onwards.
 
-ifeval::["{build-type}" == "community"]
-Chart value `insecureSkipHostKeyChecks` defines how <<_continous_delivery,{product_name}>> behaves with regards to `known_hosts` when establishing SSH
-connections.
-
-When that value is set to `false`, <<_continous_delivery,{product_name}>> enforces strict host key checks, meaning that it will fail to establish any SSH connections to hosts for which no matching `known_hosts` entry can be found.
-This is the default behaviour from <<_continous_delivery,{product_name}>> v0.13 onwards.
- supports injecting `known_hosts` into an SSH secret. Here is an example of how to add it:
-endif::[]
 
 `known_hosts` entries are sourced in priority from secrets referenced in ``GitRepo``s, e.g. `helmSecretName` for accessing
 Helm charts or `clientSecretName` for cloning git repositories.
 
+Note that this is compatible with {product_name} looking for a `gitcredential` secret if no secret is referenced in the `GitRepo`.
 
-ifeval::["{build-type}" == "product"]
-Note that this is compatible with <<_suse_rancher_prime_continous_delivery,{product_name}>> looking for a `gitcredential` secret if no secret is referenced in the `GitRepo`.
-
-If no such secret exists, or no `known_hosts` entries are available in that secret, then <<_suse_rancher_prime_continous_delivery,{product_name}>> uses its own `known-hosts` config map, newly created at installation time with static entries for the most widely used git providers.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-Note that this is compatible with <<_continous_delivery,{product_name}>> looking for a `gitcredential` secret if no secret is referenced in the `GitRepo`.
-
-If no such secret exists, or no `known_hosts` entries are available in that secret, then <<_continous_delivery,{product_name}>> uses its own `known-hosts` config map, newly created at installation time with static entries for the most widely used git providers.
-endif::[]
+If no such secret exists, or no `known_hosts` entries are available in that secret, then {product_name} uses its own `known-hosts` config map, newly created at installation time with static entries for the most widely used git providers.
 
 Host key fingerprints added to the config map are sourced, respectively:
 
@@ -190,13 +147,7 @@ for Azure DevOps
 The absence of the config map, should no secret be available, is considered a symptom of an incomplete deployment,
 and reported as such.
 
-ifeval::["{build-type}" == "product"]
-<<_suse_rancher_prime_continous_delivery,{product_name}>> only uses a _single_ source of `known_hosts` entries at a time. This means that, even if a secret contains invalid (or insufficient) entries, then <<_suse_rancher_prime_continous_delivery,{product_name}>> does not look for valid entries in the config map. 
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-<<_continous_delivery,{product_name}>> only uses a _single_ source of `known_hosts` entries at a time. This means that, even if a secret contains invalid (or insufficient) entries, then <<_continous_delivery,{product_name}>>  does not look for valid entries in the config map. 
-endif::[]
+{product_name} only uses a _single_ source of `known_hosts` entries at a time. This means that, even if a secret contains invalid (or insufficient) entries, then {product_name} does not look for valid entries in the config map. 
 
 This applies to a secret referenced in a `GitRepo` as well as to a possible `gitcredential` secret, if no secret is referenced in the `GitRepo`.
 
@@ -220,13 +171,9 @@ Validating a repository using a certificate signed by a custom Certificate Autho
 
 [IMPORTANT]
 ====
-ifeval::["{build-type}" == "product"]
-Note that if secrets specifying CA bundles exist, for instance if <<_suse_rancher_prime_continous_delivery,{product_name}>> is installed with Rancher (see https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/resources/add-tls-secrets#using-a-private-ca-signed-certificate[this] and https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/installation-references/helm-chart-options#additional-trusted-cas[that]). <<_suse_rancher_prime_continous_delivery,{product_name}>> uses those CA bundles if no CA bundle is specified in the `GitRepo`.
-endif::[]
 
-ifeval::["{build-type}" == "community"]
-Note that if secrets specifying CA bundles exist, for instance if <<_continous_delivery,{product_name}>> is installed with Rancher (see https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/resources/add-tls-secrets#using-a-private-ca-signed-certificate[this] and https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/installation-references/helm-chart-options#additional-trusted-cas[that]). <<_continous_delivery,{product_name}>> uses those CA bundles if no CA bundle is specified in the `GitRepo`.
-endif::[]
+Note that if secrets specifying CA bundles exist, for instance if {product_name} is installed with Rancher (see https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/resources/add-tls-secrets#using-a-private-ca-signed-certificate[this] and https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/installation-references/helm-chart-options#additional-trusted-cas[that]). {product_name} uses those CA bundles if no CA bundle is specified in the `GitRepo`.
+
 ====
 
 == Using Private Helm Repositories
@@ -246,13 +193,7 @@ For a private Helm repo, users can reference a secret with the following keys:
 
 [IMPORTANT]
 ====
-ifeval::["{build-type}" == "product"]
-Note that if secrets specifying CA bundles exist, for instance if <<_suse_rancher_prime_continous_delivery,{product_name}>> is installed with Rancher (see https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/resources/add-tls-secrets#using-a-private-ca-signed-certificate[this] and https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/installation-references/helm-chart-options#additional-trusted-cas[that]). <<_suse_rancher_prime_continous_delivery,{product_name}>> uses those CA bundles if no CA bundle is specified in the `GitRepo`.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-Note that if secrets specifying CA bundles exist, for instance if <<_continous_delivery,{product_name}>> is installed with Rancher (see https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/resources/add-tls-secrets#using-a-private-ca-signed-certificate[this] and https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/installation-references/helm-chart-options#additional-trusted-cas[that]). <<_continous_delivery,{product_name}>> uses those CA bundles if no CA bundle is specified in the `GitRepo`.
-endif::[]
+Note that if secrets specifying CA bundles exist, for instance if {product_name} is installed with Rancher (see https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/resources/add-tls-secrets#using-a-private-ca-signed-certificate[this] and https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/installation-references/helm-chart-options#additional-trusted-cas[that]). {product_name} uses those CA bundles if no CA bundle is specified in the `GitRepo`.
 ====
 
 . `ssh-privatekey` for ssh private key if repo is using ssh protocol. Private key with passphase is not supported currently.
@@ -264,38 +205,19 @@ For example, to add a secret in kubectl, run
 After secret is created, specify the secret to `gitRepo.spec.helmSecretName`. Make sure secret is created under the same namespace with gitrepo.
 
 === Use different helm credentials for each path
-ifeval::["{build-type}" == "product"]
-<<_suse_rancher_prime_continous_delivery,{product_name}>> allows you to define unique credentials for each Helm chart path in a Git repository using the `helmSecretNameForPaths` field.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-<<_continous_delivery,{product_name}>> allows you to define unique credentials for each Helm chart path in a Git repository using the `helmSecretNameForPaths` field.
-endif::[]
+{product_name} allows you to define unique credentials for each Helm chart path in a Git repository using the `helmSecretNameForPaths` field.
 
 [IMPORTANT]
 ====
 If `gitRepo.spec.helmSecretNameForPaths` is defined, `gitRepo.spec.helmSecretName` is ignored.
 ====
 
-ifeval::["{build-type}" == "product"]
-Create a file named `secrets-path.yaml` that specifies credentials for each path in your `GitRepo`. The keys must match the full path to a bundle directory (a folder containing a `fleet.yaml file`), which may have more segments than the entry under `paths:`. If a path listed in the GitRepo is not included in this file, <<_suse_rancher_prime_continous_delivery,{product_name}>> does not use credentials for it.
+Create a file named `secrets-path.yaml` that specifies credentials for each path in your `GitRepo`. The keys must match the full path to a bundle directory (a folder containing a `fleet.yaml file`), which may have more segments than the entry under `paths:`. If a path listed in the GitRepo is not included in this file, {product_name} does not use credentials for it.
 
 [NOTE]
 ====
-The file should be named `secrets-path.yaml`, otherwise <<_suse_rancher_prime_continous_delivery,{product_name}>> will not be able to use it.
+The file should be named `secrets-path.yaml`, otherwise {product_name} will not be able to use it.
 ====
-
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-Create a file named `secrets-path.yaml` that specifies credentials for each path in your `GitRepo`. The keys must match the full path to a bundle directory (a folder containing a `fleet.yaml file`), which may have more segments than the entry under `paths:`. If a path listed in the GitRepo is not included in this file, <<_continous_delivery,{product_name}>> does not use credentials for it.
-
-[NOTE]
-====
-The file should be named `secrets-path.yaml`, otherwise <<_continous_delivery,{product_name}>> will not be able to use it.
-====
-endif::[]
-
 
 Example `GitRepo` resource:
 

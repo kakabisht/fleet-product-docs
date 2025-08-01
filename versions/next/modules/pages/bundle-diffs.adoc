@@ -1,16 +1,6 @@
 = Generating Diffs to Ignore Modified GitRepos
 
-
-ifeval::["{build-type}" == "product"]
-
-When you create a GitRepo custom resource (CR), <<_suse_rancher_prime_continous_delivery,{product_name}>> automatically generates the corresponding bundles.
-
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-When you create a GitRepo custom resource (CR), <<_continous_delivery,{product_name}>> automatically generates the corresponding bundles.
-
-endif::[]
+When you create a GitRepo custom resource (CR), {product_name} automatically generates the corresponding bundles.
 
 You can access these bundles by navigating to the Cluster Explorer (Dashboard UI), and selecting the `Bundles` section.
 
@@ -26,17 +16,8 @@ image::/images/ModifiedGitRepo.png[]
 Associated Bundle
 image:/images/ModifiedBundle.png[]
 
-
-ifeval::["{build-type}" == "product"]
-<<_suse_rancher_prime_continous_delivery,{product_name}>> bundles support the ability to specify a custom http://jsonpatch.com/[jsonPointer patch].
-With the patch, users can instruct <<_suse_rancher_prime_continous_delivery,{product_name}>> to ignore:
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-<<_continous_delivery,{product_name}>> bundles support the ability to specify a custom http://jsonpatch.com/[jsonPointer patch].
-With the patch, users can instruct <<_continous_delivery,{product_name}>> to ignore:
-endif::[]
-
+{product_name} bundles support the ability to specify a custom http://jsonpatch.com/[jsonPointer patch].
+With the patch, users can instruct {product_name} to ignore:
 
 * object modifications
 * entire objects

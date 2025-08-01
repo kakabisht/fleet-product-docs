@@ -1,15 +1,6 @@
 = Architecture
 
-ifeval::["{build-type}" == "product"]
-
-<<_suse_rancher_prime_continous_delivery,{product_name}>> has two primary components.  The Fleet controller and the cluster agents. These components work in a two-stage pull model.  The Fleet controller pulls from git and the cluster agents pulls from the Fleet controller.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-
-<<_continous_delivery,{product_name}>> has two primary components.  The Fleet controller and the cluster agents. These components work in a two-stage pull model.  The Fleet controller pulls from git and the cluster agents pulls from the Fleet controller.
-endif::[]
-
+{product_name} has two primary components.  The Fleet controller and the cluster agents. These components work in a two-stage pull model.  The Fleet controller pulls from git and the cluster agents pulls from the Fleet controller.
 
 == Fleet Controller
 

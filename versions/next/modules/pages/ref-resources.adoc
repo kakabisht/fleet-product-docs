@@ -1,12 +1,6 @@
 = List of Deployed Resources
 
-ifeval::["{build-type}" == "product"]
-After installing <<_suse_rancher_prime_continous_delivery,{product_name}>> in Rancher these resources are created in the upstream cluster.
-endif::[]
-
-ifeval::["{build-type}" == "community"]
-After installing <<_continous_delivery,{product_name}>> in Rancher these resources are created in the upstream cluster.
-endif::[] 
+After installing {product_name} in Rancher these resources are created in the upstream cluster.
 
 For more information, refer to xref:namespaces.adoc[Namespaces].
 
