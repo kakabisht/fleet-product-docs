@@ -1,0 +1,21 @@
+= fleet-manager
+:revdate: 2025-04-30
+:page-revdate: {revdate}
+
+Configure the Fleet manager that communicates with the Fleet agent
+
+----
+fleet-manager [flags]
+----
+
+== Options
+
+----
+      --debug               Turn on debug logging
+      --debug-level int     If debugging is enabled, set klog -v=X
+      --disable-bootstrap   disable local cluster components
+      --disable-gitops      disable gitops components
+  -h, --help                help for fleet-manager
+      --kubeconfig string   Kubeconfig file
+      --namespace string    namespace to watch (default "cattle-fleet-system")
+----
