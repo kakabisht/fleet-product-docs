@@ -2,9 +2,14 @@ name: Test Sync Action
 on:
   push:
     branches:
-      - test-main  # Trigger when test-main-gh-1 is merged into this
+      - test-main
     paths:
-      - 'community-docs/**' # Only run if these files changed
+      - 'community-docs/**'
+  workflow_dispatch: # Allows you to run this manually from the Actions tab
+
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
   sync-job:
@@ -13,32 +18,32 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Essential to see all branches
+          fetch-depth: 0 
 
-      - name: Sync Files to Temp
+      - name: Sync Files
         run: |
-          # 1. Create a safe staging area
+          # 1. Store files from the current branch (test-main)
           mkdir -p /tmp/sync-staging
-          
-          # 2. Copy files from the source folder in test-main
           cp -r community-docs/* /tmp/sync-staging/
+          
+          # 2. Force the runner to find the target branch
+          git fetch origin test-product-docs-1:test-product-docs-1
           
           # 3. Switch to the target branch
           git checkout test-product-docs-1
           
-          # 4. Move files to the destination 
-          # (Modify './' if you want them in a specific subfolder)
+          # 4. Inject files and check status
           cp -r /tmp/sync-staging/* ./
+          git status # This will show in logs if files actually changed
           
-          # Clean up
           rm -rf /tmp/sync-staging
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          base: test-product-docs-1       # The branch you want to merge INTO
-          branch: automated-sync-test     # A new temporary branch for the PR
+          base: test-product-docs-1
+          branch: automated-sync-test
           title: "Test: Syncing community-docs to product-docs"
           body: "This PR was triggered by a merge into test-main."
           commit-message: "test: sync files from test-main"
