@@ -1,11 +1,12 @@
-name: Test Sync Action
+name: Doc Sync
+
 on:
   push:
     branches:
       - test-main
     paths:
       - 'community-docs/**'
-  workflow_dispatch: # Allows you to run this manually from the Actions tab
+  workflow_dispatch: # Allows manual trigger from the Actions tab
 
 permissions:
   contents: write
@@ -15,52 +16,93 @@ jobs:
   sync-job:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
+      - name: Checkout Source
         uses: actions/checkout@v4
         with:
           fetch-depth: 0 
 
-      - name: Sync Files (Changed files)
+      - name: Version-Aware Update
         run: |
-          # 1. Identify files changed in this push/merge inside the community-docs folder
-          # This looks at the difference between the current commit and its parent
-          CHANGES=$(git diff --name-only HEAD^ HEAD | grep '^community-docs/' || true)
+          # 1. Resolve Git Diffs to find modified files
+          BEFORE_SHA="${{ github.event.before }}"
+          AFTER_SHA="${{ github.event.after }}"
+
+          # Handle edge case where 'before' SHA is empty (e.g. first push)
+          if [ "$BEFORE_SHA" == "0000000000000000000000000000000000000000" ] || [ -z "$BEFORE_SHA" ]; then
+            BEFORE_SHA="HEAD^1"
+          fi
+
+          CHANGES=$(git diff --name-only $BEFORE_SHA $AFTER_SHA | grep '^community-docs/.*\.adoc$' || true)
           
           if [ -z "$CHANGES" ]; then
-            echo "No changes detected in community-docs/. Skipping sync."
+            echo "No relevant .adoc changes in community-docs/. Skipping sync."
             exit 0
           fi
 
           echo "Files to sync: $CHANGES"
 
-          # 2. Stage ONLY the changed files
+          # 2. Store files in /tmp by version folder to survive branch checkout
           mkdir -p /tmp/sync-staging
-          for file in $CHANGES; do
-            # This extracts the relative path and copies it
-            # e.g., community-docs/sub/file.adoc -> /tmp/sync-staging/sub/file.adoc
-            dest_dir="/tmp/sync-staging/$(dirname "${file#community-docs/}")"
-            mkdir -p "$dest_dir"
-            cp "$file" "$dest_dir/"
+          for src_file in $CHANGES; do
+            # Path structure: community-docs/<VERSION>/rest/of/path/file.adoc
+            # Extract VERSION (the 2nd element)
+            VERSION=$(echo "$src_file" | cut -d'/' -f2)
+            FILENAME=$(basename "$src_file")
+
+            mkdir -p "/tmp/sync-staging/$VERSION"
+            cp "$src_file" "/tmp/sync-staging/$VERSION/$FILENAME"
+            echo "Staged $FILENAME for $VERSION"
           done
-          
-          # 3. Switch to target branch
+
+          # 3. Switch to the Product Docs branch
           git fetch origin test-product-docs-1:test-product-docs-1
           git checkout test-product-docs-1
           
-          # 4. Inject only the surgical changes
-          cp -r /tmp/sync-staging/* ./
-          rm -rf /tmp/sync-staging
+          # 4. Search and Replace inside the specific matching version folders
+          for version_dir in /tmp/sync-staging/*; do
+            VERSION_NAME=$(basename "$version_dir")
+            
+            if [ ! -d "versions/$VERSION_NAME" ]; then
+              echo "Warning: Folder 'versions/$VERSION_NAME' not found on target branch. Skipping."
+              continue
+            fi
 
-          # Show what Git actually sees as a change now
+            echo ">>> Updating docs for version: $VERSION_NAME"
+            
+            for staged_file in "$version_dir"/*.adoc; do
+              FNAME=$(basename "$staged_file")
+              
+              # Find where this filename exists specifically inside the target version folder
+              TARGET_MATCHES=$(find "versions/$VERSION_NAME" -name "$FNAME")
+              
+              if [ -z "$TARGET_MATCHES" ]; then
+                echo "    ! $FNAME not found in versions/$VERSION_NAME. Skipping."
+              else
+                for target in $TARGET_MATCHES; do
+                  echo "    + Updating: $target"
+                  cp "$staged_file" "$target"
+                done
+              fi
+            done
+          done
+
+          # 5. Clean up any untracked files left over from the source branch
+          git clean -fd
+          echo "Final Git Status:"
           git status
-          
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           base: test-product-docs-1
-          branch: automated-sync-test
-          title: "Test: Syncing community-docs to product-docs"
-          body: "This PR was triggered by a merge into test-main."
-          commit-message: "test: sync files from test-main"
+          branch: docs-sync-automated
+          title: "docs: versioned sync from community-docs"
+          body: |
+            Automated PR to sync specific .adoc modifications.
+            - **Source**: `community-docs/`
+            - **Target**: Matched files inside `versions/`
+            
+            This sync ensures version parity (e.g., community v0.15 only updates product v0.15).
+          commit-message: "docs: sync of community changes"
           delete-branch: true
