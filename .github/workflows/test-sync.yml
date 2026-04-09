@@ -1,0 +1,45 @@
+name: Test Sync Action
+on:
+  push:
+    branches:
+      - test-main  # Trigger when test-main-gh-1 is merged into this
+    paths:
+      - 'community-docs/**' # Only run if these files changed
+
+jobs:
+  sync-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Essential to see all branches
+
+      - name: Sync Files to Temp
+        run: |
+          # 1. Create a safe staging area
+          mkdir -p /tmp/sync-staging
+          
+          # 2. Copy files from the source folder in test-main
+          cp -r community-docs/* /tmp/sync-staging/
+          
+          # 3. Switch to the target branch
+          git checkout test-product-docs-1
+          
+          # 4. Move files to the destination 
+          # (Modify './' if you want them in a specific subfolder)
+          cp -r /tmp/sync-staging/* ./
+          
+          # Clean up
+          rm -rf /tmp/sync-staging
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: test-product-docs-1       # The branch you want to merge INTO
+          branch: automated-sync-test     # A new temporary branch for the PR
+          title: "Test: Syncing community-docs to product-docs"
+          body: "This PR was triggered by a merge into test-main."
+          commit-message: "test: sync files from test-main"
+          delete-branch: true

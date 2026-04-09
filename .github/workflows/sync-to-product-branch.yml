@@ -43,7 +43,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: sync-community-updates  # The intermediate branch for the PR
-          base: test-product-docs-01              # The branch you want to merge INTO
+          base: test-product-docs-1       # The branch you want to merge INTO
           title: "docs: sync updates from main (community-docs)"
           body: |
             This is an automated PR to sync documentation changes from the `main` branch.
