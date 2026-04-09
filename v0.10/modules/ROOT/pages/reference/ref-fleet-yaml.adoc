@@ -1,0 +1,230 @@
+= fleet.yaml
+:revdate: 2025-04-30
+:page-revdate: {revdate}
+:doctype: book
+
+The `fleet.yaml` file adds options to a bundle. Any directory with a
+`fleet.yaml` is automatically turned into bundle.
+
+For more information on how to use the `fleet.yaml` to customize bundles see
+xref:explanations/gitrepo-content.adoc[Git Repository Contents].
+
+The content of the fleet.yaml corresponds to the struct at
+https://github.com/rancher/fleet/blob/b501b7e7864d37e310dfcdb109c73e5aec4240bb/pkg/bundlereader/read.go#L132-L139[pkg/bundlereader/read.go],
+which contains the xref:reference/ref-crds.adoc#_bundlespec[BundleSpec].
+
+== Reference
+
+.fleet.yaml
+[source,yaml]
+----
+# The default namespace to be applied to resources. This field is not used to
+# enforce or lock down the deployment to a specific namespace, but instead
+# provide the default value of the namespace field if one is not specified in
+# the manifests.
+#
+# Default: default
+defaultNamespace: default
+
+# All resources will be assigned to this namespace and if any cluster scoped
+# resource exists the deployment will fail.
+#
+# Default: ""
+namespace: default
+
+namespaceLabels:
+  key: value
+
+namespaceAnnotations:
+  key: value
+
+labels:
+  key: value
+
+kustomize:
+  dir: ./kustomize
+
+helm:
+  chart: ./chart
+  repo: https://charts.rancher.io
+  version: 0.1.0
+  disableDependencyUpdate: false
+
+  values:
+    any-custom: value
+    variableName: global.fleet.clusterLabels.LABELNAME
+    templatedLabel: "${ .ClusterLabels.LABELNAME }-foo"
+    valueFromEnv:
+      "${ .ClusterLabels.ENV }": ${ .ClusterValues.someValue | upper | quote }
+
+  valuesFiles:
+    - values1.yaml
+    - values2.yaml
+
+  valuesFrom:
+    - configMapKeyRef:
+        name: configmap-values
+        namespace: default
+        key: values.yaml
+    - secretKeyRef:
+        name: secret-values
+        namespace: default
+        key: values.yaml
+
+  releaseName: my-release
+  takeOwnership: false
+  force: false
+  atomic: false
+  disablePreProcess: false
+  disableDNS: false
+  skipSchemaValidation: false
+  waitForJobs: true
+
+paused: false
+
+rolloutStrategy:
+  maxUnavailable: 15%
+  maxUnavailablePartitions: 20%
+  autoPartitionSize: 10%
+
+  partitions:
+    - name: canary
+      maxUnavailable: 10%
+      clusterSelector:
+        matchLabels:
+          env: prod
+      clusterGroupSelector:
+        matchLabels:
+          env: prod
+      clusterGroup: agroup
+
+targetCustomizations:
+  - name: prod
+    namespace: newvalue
+    defaultNamespace: newdefaultvalue
+    kustomize: {}
+    helm: {}
+    yaml:
+      overlays:
+        - custom2
+        - custom3
+    clusterSelector:
+      matchLabels:
+        env: prod
+    clusterName: dev-cluster
+    clusterGroupSelector:
+      matchLabels:
+        region: us-east
+    clusterGroup: group1
+    doNotDeploy: false
+    correctDrift:
+      enabled: false
+      force: false
+      keepFailHistory: false
+
+dependsOn:
+  - name: one-multi-cluster-hello-world
+  - selector:
+      matchLabels:
+        app: weak-monkey
+
+ignore:
+  conditions:
+    - type: Active
+      status: "False"
+
+overrideTargets:
+  - clusterSelector:
+      matchLabels:
+        env: dev
+----
+
+== Helm Options
+
+=== Main options
+
+==== chart
+
+This specifies a custom location for the Helm chart. This can refer to any go-getter URL or OCI registry based Helm
+chart URL.
+
+[WARNING]
+====
+Limitation: downloading Helm charts from git with custom CA bundles
+
+Git repositories can be downloaded via unauthenticated http.
+
+However, this does not work with custom CA bundles.
+See link:https://github.com/rancher/fleet/issues/3646[fleet#3646].
+====
+
+==== version
+
+[NOTE]
+====
+`+` character support
+
+OCI registries don't support the `+` character.
+====
+
+=== How fleet-agent deploys the bundle
+
+- releaseName
+- takeOwnership
+- force
+- atomic
+- disablePreProcess
+- disableDNS
+- skipSchemaValidation
+- waitForJobs
+
+=== Helm Chart Download Options
+
+- chart
+- repo
+- version
+
+=== Helm Chart Value Options
+
+- values
+- valuesFiles
+- valueFrom
+
+== Values
+
+Values are processed in different stages of the xref:explanations/ref-bundle-stages.adoc[Bundle lifecycle]
+
+* fleet.yaml `values:` and `valuesFile:`
+* templating `${ }`
+* valuesFrom
+
+== Templating
+
+link:https://masterminds.github.io/sprig/[sprig templating library]
+
+[source,text]
+----
+${ get .ClusterLabels "management.cattle.io/cluster-display-name" }
+----
+
+[source,text]
+----
+foo-bar-${`${PWD}`}
+----
+
+[source,text]
+----
+foo-bar-${PWD}
+----
+
+[WARNING]
+====
+empty values
+
+Example:
+
+[source,text]
+----
+${ if hasKey .ClusterLabels "LABELNAME" }${ .ClusterLabels.LABELNAME }${ else }missing${ end}
+----
+====
