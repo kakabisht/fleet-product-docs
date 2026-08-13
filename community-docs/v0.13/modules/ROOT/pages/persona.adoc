@@ -2,6 +2,8 @@
 :revdate: 2025-07-23
 :page-revdate: {revdate}
 
+This is a table with the key personas and their responsibilities when using {product_name}.
+
 [cols="1,2,2", options="header"]
 |===
 |Persona |Responsibilities |Key Benefits

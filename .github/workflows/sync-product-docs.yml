@@ -3,9 +3,10 @@ name: Sync Community Docs to Product Docs
 on:
     push:
       branches:
-        - main
+        - automate-changes-prod-from-comm
       paths:
         - 'community-docs/**'
+        - '.github/workflows/**' # Temporarily include workflow edits so pushes trigger it
     workflow_dispatch: # <--- ADD THIS LINE
 
 jobs:
@@ -30,12 +31,12 @@ jobs:
           rsync -av --delete community-docs/ /tmp/docs-sync/
 
           # 2. Fetch and switch to product-docs branch context
-          git fetch origin product-docs
+          git fetch origin product-docs-test
           
           SYNC_BRANCH="sync/community-docs-update"
           
           # Create or reset the local sync branch tracking origin/product-docs
-          git checkout -B $SYNC_BRANCH origin/product-docs
+          git checkout -B $SYNC_BRANCH origin/product-docs-test
 
           # 3. Mirror contents into the versions/ folder
           mkdir -p versions
@@ -50,7 +51,7 @@ jobs:
             # 5. Create PR if one doesn't already exist for this branch
             if ! gh pr view $SYNC_BRANCH --json state | grep -q '"state":"OPEN"'; then
               gh pr create \
-                --base product-docs \
+                --base product-docs-test \
                 --head $SYNC_BRANCH \
                 --title "sync: update versions/ from main community-docs" \
                 --body "Automated sync PR generated from changes in \`community-docs/\` on the \`main\` branch."
