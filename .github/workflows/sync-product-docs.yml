@@ -1,0 +1,62 @@
+name: Sync Community Docs to Product Docs
+
+on:
+    push:
+      branches:
+        - main
+      paths:
+        - 'community-docs/**'
+    workflow_dispatch: # <--- ADD THIS LINE
+
+jobs:
+  sync-docs:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # Fetch full history to switch branches
+
+      - name: Sync community-docs to versions directory and create PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # 1. Back up community-docs from main branch to a temporary folder
+          mkdir -p /tmp/docs-sync
+          rsync -av --delete community-docs/ /tmp/docs-sync/
+
+          # 2. Fetch and switch to product-docs branch context
+          git fetch origin product-docs
+          
+          SYNC_BRANCH="sync/community-docs-update"
+          
+          # Create or reset the local sync branch tracking origin/product-docs
+          git checkout -B $SYNC_BRANCH origin/product-docs
+
+          # 3. Mirror contents into the versions/ folder
+          mkdir -p versions
+          rsync -av --delete /tmp/docs-sync/ versions/
+
+          # 4. Check if there are changes to commit
+          if [ -n "$(git status --porcelain)" ]; then
+            git add versions/
+            git commit -m "sync: update versions/ from main branch community-docs [${GITHUB_SHA::7}]"
+            git push origin $SYNC_BRANCH --force
+
+            # 5. Create PR if one doesn't already exist for this branch
+            if ! gh pr view $SYNC_BRANCH --json state | grep -q '"state":"OPEN"'; then
+              gh pr create \
+                --base product-docs \
+                --head $SYNC_BRANCH \
+                --title "sync: update versions/ from main community-docs" \
+                --body "Automated sync PR generated from changes in \`community-docs/\` on the \`main\` branch."
+            else
+              echo "PR already open. Updated branch $SYNC_BRANCH with latest changes."
+            fi
+          else
+            echo "No changes detected between community-docs/ and versions/."
+          fi
